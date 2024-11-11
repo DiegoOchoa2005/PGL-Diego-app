@@ -1,12 +1,15 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { Slot } from "expo-router";
+import ThemeProvider from "../provider/ThemeProvider";
 
 const _layout = () => {
   return (
-    <View style={styles.container}>
-      <Slot />
-    </View>
+    <ThemeProvider>
+      <View style={styles.container}>
+        <Slot />
+      </View>
+    </ThemeProvider>
   );
 };
 
