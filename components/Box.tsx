@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import {
+  Dimensions,
   Image,
   ImageSourcePropType,
   StyleSheet,
@@ -12,19 +13,19 @@ export type BoxProps = {
   description: string;
   image: ImageSourcePropType;
 };
-
+const screenWidth = Dimensions.get("window").width;
 const Box = ({ description, image }: BoxProps) => {
   const theme = useContext(ThemeContext);
   return (
     <View style={[styles.container, { borderColor: theme.borderColor }]}>
       <View
-        style={[styles.boxInfo, { backgroundColor: theme.backgroundPrimary }]}
+        style={[styles.boxInfo, { backgroundColor: theme.backgroundSecondary }]}
       >
         <View
           style={[
             styles.boxTextContainer,
             {
-              backgroundColor: theme.backgroundSecondary,
+              backgroundColor: theme.backgroundPrimary,
               borderColor: theme.borderColor,
             },
           ]}
@@ -49,13 +50,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderStyle: "dashed",
     borderWidth: 1,
-    margin: 4,
-    marginHorizontal: 8,
+    marginBottom: 4,
+    marginTop: 4,
+    width: screenWidth - 20,
   },
   boxTextContainer: {
     padding: 10,
     marginLeft: "auto",
-    width: "auto",
     maxWidth: 260,
     borderWidth: 1,
     borderStyle: "dotted",

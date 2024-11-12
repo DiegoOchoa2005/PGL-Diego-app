@@ -1,12 +1,12 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { Card } from "./Card";
+import theme from "../styles/Colors";
 const screenWidth = Dimensions.get("window").width;
-const screenHeigth = Dimensions.get("window").height;
 const PortFolioHeader = () => {
   return (
     <View style={styles.cardContainer}>
-      <View style={styles.bodyCard}>
+      <View>
         <Card
           avatar={require("../assets/img/boxImages/avatar.webp")}
           title="Acerca de mi persona"
@@ -26,11 +26,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: screenWidth,
-    height: screenHeigth - 130,
-    maxWidth: screenWidth,
-    maxHeight: screenHeigth - 130,
-  },
-  bodyCard: {
-    marginTop: 25,
+    marginTop: 20,
+    backgroundColor: theme.light.backgroundPrimary,
   },
 });

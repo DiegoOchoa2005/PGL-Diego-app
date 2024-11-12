@@ -3,7 +3,7 @@ import React from "react";
 import { Slot } from "expo-router";
 import ThemeProvider from "../provider/ThemeProvider";
 
-const _layout = () => {
+const AppLayout = () => {
   return (
     <ThemeProvider>
       <View style={styles.container}>
@@ -13,7 +13,7 @@ const _layout = () => {
   );
 };
 
-export default _layout;
+export default AppLayout;
 
 const styles = StyleSheet.create({
   container: {

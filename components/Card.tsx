@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
-import ThemeContext from "../context/ThemeContext";
+import theme from "../styles/Colors";
 
 export type CardProps = {
   avatar: ImageSourcePropType;
@@ -15,44 +15,14 @@ export type CardProps = {
 };
 
 export const Card = ({ avatar, title, description }: CardProps) => {
-  const theme = useContext(ThemeContext);
   return (
     <View style={styles.cardContainer}>
       <View style={styles.cardAvatar}>
         <Image style={styles.avatar} source={avatar} />
       </View>
-      <View
-        style={[
-          styles.cardInfo,
-          {
-            backgroundColor: theme.backgroundPrimary,
-            borderColor: theme.borderColor,
-          },
-        ]}
-      >
-        <Text
-          style={[
-            styles.cardTitle,
-            {
-              color: theme.textPrimary,
-              backgroundColor: theme.backgroundSecondary,
-              borderColor: theme.borderColor,
-            },
-          ]}
-        >
-          {title}
-        </Text>
-        <Text
-          style={[
-            styles.cardDescription,
-            {
-              color: theme.textSecondary,
-              backgroundColor: theme.backgroundSecondary,
-            },
-          ]}
-        >
-          {description}
-        </Text>
+      <View style={styles.cardInfo}>
+        <Text style={styles.cardTitle}>{title}</Text>
+        <Text style={styles.cardDescription}>{description}</Text>
       </View>
     </View>
   );
@@ -77,8 +47,9 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 10,
     maxWidth: 390,
-    height: 110,
     maxHeight: 110,
+    backgroundColor: theme.light.backgroundSecondary,
+    borderColor: theme.light.borderColor,
   },
   cardAvatar: {
     marginHorizontal: "auto",
@@ -88,15 +59,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 22,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    color: theme.light.textPrimary,
+    borderColor: theme.light.borderColor,
   },
   cardDescription: {
     padding: 5,
     fontSize: 16,
     textAlign: "justify",
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    color: theme.light.textSecondary,
   },
   avatar: {
     height: 100,

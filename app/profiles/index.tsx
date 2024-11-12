@@ -11,5 +11,3 @@ const PortfolioPage = () => {
 };
 
 export default PortfolioPage;
-
-const styles = StyleSheet.create({});
