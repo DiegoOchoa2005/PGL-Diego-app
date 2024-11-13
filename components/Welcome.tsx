@@ -20,7 +20,7 @@ const WelcomePage = () => {
           />
         </View>
         <Pressable style={styles.pressable}>
-          <Link href={"./profiles"} style={styles.pressableText}>
+          <Link href={"./portfolio"} style={styles.pressableText}>
             Clickeame
           </Link>
         </Pressable>
