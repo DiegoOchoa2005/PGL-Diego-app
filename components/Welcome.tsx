@@ -15,7 +15,7 @@ const WelcomePage = () => {
         </View>
         <View style={styles.imageView}>
           <Image
-            source={require("../assets/img/boxImages/sandyIcon.png")}
+            source={require("../assets/img/boxImages/sandyWelcome.png")}
             style={styles.image}
           />
         </View>
@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   image: {
-    height: 200,
-    width: 200,
+    height: 300,
+    width: 300,
   },
   pressable: {
     marginHorizontal: "auto",
