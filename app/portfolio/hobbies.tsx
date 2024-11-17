@@ -1,9 +1,9 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import React from "react";
-import Box from "../../../components/Box";
-import { boxes } from "../../../data/BoxData";
+import Box from "../../components/Box";
+import { boxes } from "../../data/BoxData";
 import { Dimensions } from "react-native";
-import theme from "../../../styles/Colors";
+import theme from "../../styles/Colors";
 const screenHeigth = Dimensions.get("screen").height;
 const HobbiesPage = () => {
   return (
@@ -28,7 +28,7 @@ export default HobbiesPage;
 
 const styles = StyleSheet.create({
   boxList: {
-    height: screenHeigth - 372,
+    height: screenHeigth - 380,
     marginHorizontal: "auto",
   },
   boxTitleInfo: {

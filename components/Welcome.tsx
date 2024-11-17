@@ -90,11 +90,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "dashed",
     borderColor: theme.light.borderColor,
+    width: "60%",
   },
   pressableText: {
     color: theme.light.textPrimary,
     fontSize: 34,
     fontWeight: "bold",
     padding: 20,
+    textAlign: "center",
   },
 });

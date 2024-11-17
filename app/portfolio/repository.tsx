@@ -7,22 +7,20 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import QRCode from "react-native-qrcode-svg";
-import theme from "../../../styles/Colors";
+import theme from "../../styles/Colors";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeigth = Dimensions.get("window").height;
 const RepositoryPage = () => {
   const [sandyImage, setImage] = useState(
-    require("../../../assets/img/sandyInteractive/normalSandy.png")
+    require("../../assets/img/sandyInteractive/normalSandy.png")
   );
   const [originalImage, setOriginalImage] = useState(true);
   const handleSandyImage = () => {
     if (originalImage) {
-      setImage(
-        require("../../../assets/img/sandyInteractive/sandySlapped.png")
-      );
+      setImage(require("../../assets/img/sandyInteractive/sandySlapped.png"));
     } else {
-      setImage(require("../../../assets/img/sandyInteractive/normalSandy.png"));
+      setImage(require("../../assets/img/sandyInteractive/normalSandy.png"));
     }
     setOriginalImage(!originalImage);
   };
@@ -33,7 +31,7 @@ const RepositoryPage = () => {
           <QRCode
             size={110}
             value="https://github.com/DiegoOchoa2005/pgl-portfolio-app"
-            logo={require("../../../assets/img/boxImages/sandyLogo.png")}
+            logo={require("../../assets/img/boxImages/sandyLogo.png")}
             logoSize={20}
           />
         </View>
@@ -65,7 +63,6 @@ const styles = StyleSheet.create({
     display: "flex",
     height: screenHeigth,
     width: screenWidth,
-    zIndex: -1,
   },
   qrCode: {
     alignItems: "center",

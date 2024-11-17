@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: screenWidth,
-    marginTop: 20,
     backgroundColor: theme.light.backgroundPrimary,
   },
 });
