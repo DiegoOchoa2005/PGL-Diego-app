@@ -5,24 +5,51 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import QRCode from "react-native-qrcode-svg";
 import theme from "../../styles/Colors";
+import { Audio } from "expo-av";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeigth = Dimensions.get("window").height;
 const RepositoryPage = () => {
+  const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [sandyImage, setImage] = useState(
     require("../../assets/img/sandyInteractive/normalSandy.png")
   );
   const [originalImage, setOriginalImage] = useState(true);
   const handleSandyImage = () => {
     if (originalImage) {
+      playSound();
       setImage(require("../../assets/img/sandyInteractive/sandySlapped.png"));
     } else {
       setImage(require("../../assets/img/sandyInteractive/normalSandy.png"));
     }
     setOriginalImage(!originalImage);
+  };
+  useEffect(() => {
+    const loadSound = async () => {
+      try {
+        const { sound } = await Audio.Sound.createAsync(
+          require("../../sounds/cachetada.mp3")
+        );
+        setSound(sound);
+      } catch (error) {
+        console.error("Error al cargar el sonido:", error);
+      }
+    };
+
+    loadSound();
+  }, []);
+
+  const playSound = async () => {
+    try {
+      if (sound != null) {
+        await sound.replayAsync();
+      }
+    } catch (error) {
+      console.error("Error al reproducir el sonido:", error);
+    }
   };
   return (
     <View style={styles.qrContainer}>
@@ -36,7 +63,13 @@ const RepositoryPage = () => {
           />
         </View>
         <View style={styles.cuteDraw}>
-          <TouchableOpacity onPress={handleSandyImage} activeOpacity={1}>
+          <TouchableOpacity
+            onPress={() => {
+              handleSandyImage();
+              playSound();
+            }}
+            activeOpacity={1}
+          >
             <Image style={styles.sandyImage} source={sandyImage} />
           </TouchableOpacity>
         </View>
