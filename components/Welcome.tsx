@@ -24,6 +24,11 @@ const WelcomePage = () => {
             Clickeame
           </Link>
         </Pressable>
+        <Pressable style={styles.pressableShoppingList}>
+          <Link href={"./shoppinglist"} style={styles.pressableText}>
+            Lista de compras
+          </Link>
+        </Pressable>
       </View>
     </View>
   );
@@ -34,6 +39,7 @@ export default WelcomePage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: theme.light.backgroundSecondary,
   },
   wrapper: {
     margin: 10,
@@ -84,13 +90,23 @@ const styles = StyleSheet.create({
   },
   pressable: {
     marginHorizontal: "auto",
-    marginBottom: "auto",
+    marginBottom: 20,
     backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     borderWidth: 1,
     borderStyle: "dashed",
     borderColor: theme.light.borderColor,
     width: "60%",
+  },
+  pressableShoppingList: {
+    marginHorizontal: "auto",
+    marginBottom: "auto",
+    backgroundColor: theme.light.backgroundSecondary,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderColor: theme.light.borderColor,
+    width: "90%",
   },
   pressableText: {
     color: theme.light.textPrimary,
