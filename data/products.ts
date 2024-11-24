@@ -1,5 +1,6 @@
 import uuid from "react-native-uuid";
-export const products = [
+import { Product } from "../components/Product";
+export const products: Product[] = [
   {
     id: uuid.v4(),
     productName: "Pan",
