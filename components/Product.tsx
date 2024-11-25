@@ -8,16 +8,19 @@ export type ProductProps = {
   ammount: number;
   pricePerUnit: number;
   isInShoppingCart: boolean;
+  toggleInCart?: (id: string) => void;
   removeFromList?: () => void;
 };
 
 const Product = ({
+  id,
   productName,
   category,
   ammount,
   pricePerUnit,
   isInShoppingCart,
   removeFromList,
+  toggleInCart,
 }: ProductProps) => {
   const checkCategory = (category: string) => {
     switch (category.toLowerCase()) {
@@ -27,26 +30,27 @@ const Product = ({
         return require("../assets/img/shoppingImages/fishes.png");
       case "sweets":
         return require("../assets/img/shoppingImages/sweets.png");
-
       default:
         break;
     }
   };
-  const checkIfIsInShoppingCart = (isInShoppingCart: boolean) => {
-    switch (isInShoppingCart) {
-      case true:
-        return (
-          <Entypo name="check" size={20} color={theme.light.textPrimary} />
-        );
-      case false:
-        return (
-          <Entypo
-            name="circle-with-cross"
-            size={20}
-            color={theme.light.textPrimary}
-          />
-        );
-    }
+
+  const handleIcon = () => {
+    return isInShoppingCart ? (
+      <Entypo
+        style={styles.icon}
+        name="check"
+        size={20}
+        color={theme.light.textPrimary}
+      />
+    ) : (
+      <Entypo
+        style={styles.icon}
+        name="circle-with-cross"
+        size={20}
+        color={theme.light.textPrimary}
+      />
+    );
   };
 
   return (
@@ -56,9 +60,16 @@ const Product = ({
           <Text style={styles.productText}>{productName}</Text>
           <Text style={styles.productText}>Cantidad: {ammount}</Text>
           <Text style={styles.productText}>Precio C/U: {pricePerUnit}€</Text>
-          <Text style={styles.productText}>
-            Carrito: {checkIfIsInShoppingCart(isInShoppingCart)}
-          </Text>
+          <View style={styles.shoppingStatus}>
+            <Text style={styles.productText}>Carrito: </Text>
+            <Pressable
+              onPress={() => {
+                toggleInCart!(id);
+              }}
+            >
+              {handleIcon()}
+            </Pressable>
+          </View>
         </View>
         <View style={styles.productCategory}>
           <Image source={checkCategory(category)} style={styles.categoryImg} />
@@ -101,6 +112,11 @@ const styles = StyleSheet.create({
   productText: {
     fontSize: 18,
   },
+  shoppingStatus: {
+    display: "flex",
+    flexDirection: "row",
+    width: "40%",
+  },
   productCategory: {
     justifyContent: "center",
     width: "40%",
@@ -121,6 +137,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "dashed",
     borderColor: theme.light.borderColor,
+  },
+  icon: {
+    marginTop: 2,
   },
   deleteText: {
     fontSize: 18,
