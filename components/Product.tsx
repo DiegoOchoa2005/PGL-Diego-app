@@ -8,7 +8,7 @@ export type ProductProps = {
   ammount: number;
   pricePerUnit: number;
   isInShoppingCart: boolean;
-  removeFromList: () => void;
+  removeFromList?: () => void;
 };
 
 const Product = ({
