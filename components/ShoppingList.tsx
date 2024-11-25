@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
+
 import React, { useEffect, useState } from "react";
 import theme from "../styles/Colors";
 import { products } from "../data/products";
@@ -15,10 +16,10 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeigth = Dimensions.get("screen").height;
 const ShoppingList = () => {
   const [totalPrice, setPrice] = useState(0.0);
-
+  const [productList, setProductList] = useState(products);
   const calculateTotalPrice = () => {
     let total = 0;
-    products.forEach((product) => {
+    productList.forEach((product) => {
       total += product.pricePerUnit * product.ammount;
     });
     setPrice(total);
@@ -26,15 +27,18 @@ const ShoppingList = () => {
 
   useEffect(() => {
     calculateTotalPrice();
-  });
+  }, [productList]);
 
+  const removeProductFromList = (id: string) => {
+    setProductList(productList.filter((product) => product.id !== id));
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Lista de Compras</Text>
       </View>
       <View style={styles.shoppingListContainer}>
-        {products.length === 0 ? (
+        {productList.length === 0 ? (
           <>
             <Text style={styles.statusListText}>La lista esta vacía...</Text>
             <View style={styles.imgContainer}>
@@ -47,14 +51,16 @@ const ShoppingList = () => {
         ) : (
           <View style={styles.productList}>
             <FlatList
-              data={products}
+              data={productList}
               renderItem={({ item }) => (
                 <Product
+                  id={item.id}
                   productName={item.productName}
                   category={item.category}
                   ammount={item.ammount}
                   pricePerUnit={item.pricePerUnit}
                   isInShoppingCart={item.isInShoppingCart}
+                  removeFromList={() => removeProductFromList(item.id)}
                 />
               )}
               keyExtractor={(item) => `${item.id}`}
