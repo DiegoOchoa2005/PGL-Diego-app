@@ -15,23 +15,37 @@ import Product from "./Product";
 const screenWidth = Dimensions.get("window").width;
 const screenHeigth = Dimensions.get("screen").height;
 const ShoppingList = () => {
-  const [totalPrice, setPrice] = useState(0.0);
+  const [totalPrice, setTotalPrice] = useState(0.0);
   const [productList, setProductList] = useState(products);
+
   const calculateTotalPrice = () => {
-    let total = 0;
-    productList.forEach((product) => {
-      total += product.pricePerUnit * product.ammount;
-    });
-    setPrice(total);
+    const total = productList.reduce((sum, product) => {
+      if (product.isInShoppingCart) {
+        return sum + product.pricePerUnit * product.ammount;
+      }
+      return sum;
+    }, 0);
+    setTotalPrice(total);
   };
 
   useEffect(() => {
     calculateTotalPrice();
   }, [productList]);
 
+  const toggleInCart = (id: string) => {
+    setProductList((prevList) =>
+      prevList.map((product) =>
+        product.id === id
+          ? { ...product, isInShoppingCart: !product.isInShoppingCart }
+          : product
+      )
+    );
+  };
+
   const removeProductFromList = (id: string) => {
     setProductList(productList.filter((product) => product.id !== id));
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -60,6 +74,7 @@ const ShoppingList = () => {
                   ammount={item.ammount}
                   pricePerUnit={item.pricePerUnit}
                   isInShoppingCart={item.isInShoppingCart}
+                  toggleInCart={toggleInCart}
                   removeFromList={() => removeProductFromList(item.id)}
                 />
               )}
