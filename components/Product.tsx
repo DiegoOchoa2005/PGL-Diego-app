@@ -1,13 +1,14 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import theme from "../styles/Colors";
 import Entypo from "@expo/vector-icons/Entypo";
-export type Product = {
-  id?: string;
+export type ProductProps = {
+  id: string;
   productName: string;
   category: string;
   ammount: number;
   pricePerUnit: number;
   isInShoppingCart: boolean;
+  removeFromList: () => void;
 };
 
 const Product = ({
@@ -16,7 +17,8 @@ const Product = ({
   ammount,
   pricePerUnit,
   isInShoppingCart,
-}: Product) => {
+  removeFromList,
+}: ProductProps) => {
   const checkCategory = (category: string) => {
     switch (category.toLowerCase()) {
       case "bakery":
@@ -60,6 +62,12 @@ const Product = ({
         </View>
         <View style={styles.productCategory}>
           <Image source={checkCategory(category)} style={styles.categoryImg} />
+          <Pressable style={styles.pressableDelete} onPress={removeFromList}>
+            <Text style={styles.deleteText}>
+              Eliminar{" "}
+              <Entypo name="trash" size={20} color={theme.light.textPrimary} />
+            </Text>
+          </Pressable>
         </View>
       </View>
     </View>
@@ -71,10 +79,10 @@ export default Product;
 const styles = StyleSheet.create({
   container: {
     display: "flex",
-    justifyContent: "space-between",
   },
   productBox: {
     display: "flex",
+    flexWrap: "wrap",
     flexDirection: "row",
     padding: 10,
     borderWidth: 1,
@@ -98,10 +106,24 @@ const styles = StyleSheet.create({
     width: "40%",
   },
   categoryImg: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
     marginHorizontal: "auto",
     borderRadius: 10,
     borderWidth: 1,
+  },
+  pressableDelete: {
+    marginLeft: "auto",
+    marginTop: 10,
+    marginRight: 10,
+    backgroundColor: theme.light.backgroundPrimary,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderColor: theme.light.borderColor,
+  },
+  deleteText: {
+    fontSize: 18,
+    padding: 10,
   },
 });
