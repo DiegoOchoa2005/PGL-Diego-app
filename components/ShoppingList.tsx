@@ -10,13 +10,14 @@ import {
 
 import React, { useEffect, useState } from "react";
 import theme from "../styles/Colors";
-import { products } from "../data/products";
-import Product from "./Product";
+import Product, { ProductProps } from "./Product";
+import FormModal from "./Modal";
 const screenWidth = Dimensions.get("window").width;
 const screenHeigth = Dimensions.get("screen").height;
 const ShoppingList = () => {
   const [totalPrice, setTotalPrice] = useState(0.0);
-  const [productList, setProductList] = useState(products);
+  const [productList, setProductList] = useState<ProductProps[]>([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const calculateTotalPrice = () => {
     const total = productList.reduce((sum, product) => {
@@ -26,6 +27,10 @@ const ShoppingList = () => {
       return sum;
     }, 0);
     setTotalPrice(total);
+  };
+
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
   };
 
   useEffect(() => {
@@ -42,12 +47,27 @@ const ShoppingList = () => {
     );
   };
 
+  const addProductToList = (newProduct: ProductProps) => {
+    setProductList([...productList, newProduct]);
+  };
+
   const removeProductFromList = (id: string) => {
     setProductList(productList.filter((product) => product.id !== id));
   };
 
   return (
     <View style={styles.container}>
+      {isModalVisible ? (
+        <>
+          <FormModal
+            isVisible={isModalVisible}
+            toggleModal={toggleModal}
+            addProduct={addProductToList}
+          />
+        </>
+      ) : (
+        <></>
+      )}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Lista de Compras</Text>
       </View>
@@ -87,7 +107,7 @@ const ShoppingList = () => {
             Precio total: {totalPrice.toFixed(2)}€
           </Text>
         </View>
-        <Pressable style={styles.pressable}>
+        <Pressable style={styles.pressable} onPress={toggleModal}>
           <Text style={styles.pressableText}>AÑADIR PRODUCTO</Text>
         </Pressable>
       </View>
