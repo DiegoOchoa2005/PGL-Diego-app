@@ -122,6 +122,7 @@ const FormModal = ({ isVisible, toggleModal, addProduct }: ModalProps) => {
                     onChangeText={handleProductAmmount}
                     value={ammount}
                     style={styles.productAmmountInput}
+                    maxLength={3}
                   />
                 </View>
               </View>
@@ -134,6 +135,7 @@ const FormModal = ({ isVisible, toggleModal, addProduct }: ModalProps) => {
                     keyboardType="decimal-pad"
                     onChangeText={handleProductPrice}
                     value={pricePerUnit}
+                    maxLength={6}
                   />
                 </View>
                 <View style={styles.imageContainer}>
