@@ -30,8 +30,16 @@ const Product = ({
         return require("../assets/img/shoppingImages/fishes.png");
       case "sweets":
         return require("../assets/img/shoppingImages/sweets.png");
+      case "meats":
+        return require("../assets/img/shoppingImages/meats.png");
+      case "canned":
+        return require("../assets/img/shoppingImages/canned.png");
+      case "vegsorfruits":
+        return require("../assets/img/shoppingImages/vegsorfruits.png");
+      case "others":
+        return require("../assets/img/boxImages/katarinaIcon.png");
       default:
-        break;
+        return require("../assets/img/boxImages/katarinaIcon.png");
     }
   };
 
