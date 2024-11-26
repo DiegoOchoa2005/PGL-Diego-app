@@ -1,13 +1,12 @@
 import {
   Image,
-  Keyboard,
   Pressable,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Modal from "react-native-modal";
 import theme from "../styles/Colors";
 import { Picker } from "@react-native-picker/picker";
@@ -26,24 +25,6 @@ const FormModal = ({ isVisible, toggleModal, addProduct }: ModalProps) => {
   const [ammount, setAmmount] = useState("");
   const [pricePerUnit, setPricePerUnit] = useState("");
 
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
-
-  useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      () => setKeyboardVisible(true)
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      () => setKeyboardVisible(false)
-    );
-
-    return () => {
-      keyboardDidShowListener.remove();
-      keyboardDidHideListener.remove();
-    };
-  }, []);
-
   const checkAllInputs =
     name.trim().length === 0 ||
     category.trim().length === 0 ||
@@ -53,13 +34,19 @@ const FormModal = ({ isVisible, toggleModal, addProduct }: ModalProps) => {
   const handleImage = checkAllInputs
     ? require("../assets/img/otherimages/anastasiatriste.png")
     : require("../assets/img/boxImages/sandyWelcome.png");
+
   const handleProductName = (name: string) => {
     setName(name);
+  };
+
+  const handleCategory = (category: string) => {
+    setCategory(category);
   };
 
   const handleProductAmmount = (inputValue: string) => {
     setAmmount(inputValue.replace(/[^0-9]/g, ""));
   };
+
   const handleProductPrice = (inputValue: string) => {
     if (inputValue.startsWith(".") || inputValue.startsWith(",")) {
       setPricePerUnit("");
@@ -75,17 +62,14 @@ const FormModal = ({ isVisible, toggleModal, addProduct }: ModalProps) => {
         alignSelf: "center",
       }}
       isVisible={isVisible}
-      avoidKeyboard={true}
       animationIn={"tada"}
       animationInTiming={2000}
-      propagateSwipe={true}
     >
       <View
         style={{
           flex: 1,
-          justifyContent: keyboardVisible ? "flex-start" : "center",
           alignItems: "center",
-          marginTop: keyboardVisible ? 80 : 0,
+          justifyContent: "center",
         }}
       >
         <View style={styles.modalContainer}>
@@ -109,7 +93,7 @@ const FormModal = ({ isVisible, toggleModal, addProduct }: ModalProps) => {
                   <View style={styles.pickerContainer}>
                     <Picker
                       selectedValue={category}
-                      onValueChange={(itemValue) => setCategory(itemValue)}
+                      onValueChange={(itemValue) => handleCategory(itemValue)}
                     >
                       <Picker.Item
                         label="Categoría.."
