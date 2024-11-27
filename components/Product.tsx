@@ -9,7 +9,10 @@ export type ProductProps = {
   pricePerUnit: number;
   isInShoppingCart: boolean;
   toggleInCart?: (id: string) => void;
+  toggleModal?: () => void;
   removeFromList?: () => void;
+  handleEdit?: (newValue: boolean) => void;
+  setId?: (id: string) => void;
 };
 
 const Product = ({
@@ -21,6 +24,9 @@ const Product = ({
   isInShoppingCart,
   removeFromList,
   toggleInCart,
+  toggleModal,
+  handleEdit,
+  setId: getId,
 }: ProductProps) => {
   const checkCategory = (category: string) => {
     switch (category.toLowerCase()) {
@@ -62,34 +68,69 @@ const Product = ({
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.productBox}>
-        <View style={styles.productInfo}>
-          <Text style={styles.productText}>{productName}</Text>
-          <Text style={styles.productText}>Cantidad: {ammount}</Text>
-          <Text style={styles.productText}>Precio C/U: {pricePerUnit}€</Text>
-          <View style={styles.shoppingStatus}>
-            <Text style={styles.productText}>Carrito: </Text>
+    <Pressable
+      onPress={() => {
+        toggleInCart!(id);
+      }}
+    >
+      <View style={styles.container}>
+        <View style={styles.productBox}>
+          <View style={styles.productInfo}>
+            <Text
+              style={[
+                styles.productText,
+                isInShoppingCart
+                  ? {
+                      textDecorationLine: "line-through",
+                      fontWeight: "bold",
+                      color: "green",
+                    }
+                  : {},
+              ]}
+            >
+              {productName}
+            </Text>
+            <Text style={styles.productText}>Cantidad: {ammount}</Text>
+            <Text style={styles.productText}>Precio C/U: {pricePerUnit}€</Text>
+            <View style={styles.shoppingStatus}>
+              <Text style={styles.productText}>Carrito: </Text>
+              {handleIcon()}
+            </View>
+          </View>
+          <View style={styles.productCategory}>
+            <Image
+              source={checkCategory(category)}
+              style={styles.categoryImg}
+            />
+          </View>
+          <View style={styles.pressableButtons}>
             <Pressable
+              style={styles.pressableEdit}
               onPress={() => {
-                toggleInCart!(id);
+                toggleModal!();
+                handleEdit!(true);
+                getId!(id);
               }}
             >
-              {handleIcon()}
+              <Entypo
+                style={styles.trashIcon}
+                name="edit"
+                size={20}
+                color={theme.light.textPrimary}
+              />
+            </Pressable>
+            <Pressable style={styles.pressableDelete} onPress={removeFromList}>
+              <Entypo
+                style={styles.trashIcon}
+                name="trash"
+                size={20}
+                color={theme.light.textPrimary}
+              />
             </Pressable>
           </View>
         </View>
-        <View style={styles.productCategory}>
-          <Image source={checkCategory(category)} style={styles.categoryImg} />
-          <Pressable style={styles.pressableDelete} onPress={removeFromList}>
-            <Text style={styles.deleteText}>
-              Eliminar{" "}
-              <Entypo name="trash" size={20} color={theme.light.textPrimary} />
-            </Text>
-          </Pressable>
-        </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -130,16 +171,27 @@ const styles = StyleSheet.create({
     width: "40%",
   },
   categoryImg: {
-    width: 80,
-    height: 80,
+    width: 100,
+    height: 100,
     marginHorizontal: "auto",
     borderRadius: 10,
     borderWidth: 1,
   },
+  pressableButtons: {
+    flexDirection: "row",
+    width: "100%",
+  },
   pressableDelete: {
+    marginRight: 14,
+    backgroundColor: theme.light.backgroundPrimary,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderColor: theme.light.borderColor,
+  },
+  pressableEdit: {
     marginLeft: "auto",
-    marginTop: 10,
-    marginRight: 10,
+    marginRight: 14,
     backgroundColor: theme.light.backgroundPrimary,
     borderRadius: 10,
     borderWidth: 1,
@@ -149,8 +201,8 @@ const styles = StyleSheet.create({
   icon: {
     marginTop: 2,
   },
-  deleteText: {
-    fontSize: 18,
+  trashIcon: {
+    textAlign: "center",
     padding: 10,
   },
 });
