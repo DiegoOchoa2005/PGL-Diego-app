@@ -18,6 +18,8 @@ const ShoppingList = () => {
   const [totalPrice, setTotalPrice] = useState(0.0);
   const [productList, setProductList] = useState<ProductProps[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [wantsToEdit, setWantsToEdit] = useState(false);
+  const [productId, setProductId] = useState("");
 
   const calculateTotalPrice = () => {
     const total = productList.reduce((sum, product) => {
@@ -33,10 +35,6 @@ const ShoppingList = () => {
     setIsModalVisible(!isModalVisible);
   };
 
-  useEffect(() => {
-    calculateTotalPrice();
-  }, [productList]);
-
   const toggleInCart = (id: string) => {
     setProductList((prevList) =>
       prevList.map((product) =>
@@ -45,6 +43,13 @@ const ShoppingList = () => {
           : product
       )
     );
+  };
+  const handleEdit = (newValue: boolean) => {
+    setWantsToEdit(newValue);
+  };
+
+  const handleProductId = (id: string) => {
+    setProductId(id);
   };
 
   const addProductToList = (newProduct: ProductProps) => {
@@ -55,6 +60,32 @@ const ShoppingList = () => {
     setProductList(productList.filter((product) => product.id !== id));
   };
 
+  useEffect(() => {
+    calculateTotalPrice();
+  }, [productList]);
+
+  const editProduct = (
+    id: string,
+    name: string,
+    productCategory: string,
+    productAmmount: number,
+    productPrice: number
+  ) => {
+    setProductList((prevList) =>
+      prevList.map((product) =>
+        product.id === id
+          ? {
+              ...product,
+              productName: name,
+              category: productCategory,
+              ammount: productAmmount,
+              pricePerUnit: productPrice,
+            }
+          : product
+      )
+    );
+  };
+
   return (
     <View style={styles.container}>
       {isModalVisible ? (
@@ -63,6 +94,11 @@ const ShoppingList = () => {
             isVisible={isModalVisible}
             toggleModal={toggleModal}
             addProduct={addProductToList}
+            editProduct={editProduct}
+            wantsToEdit={wantsToEdit}
+            handleEdit={handleEdit}
+            productID={productId}
+            productList={productList}
           />
         </>
       ) : (
@@ -88,14 +124,12 @@ const ShoppingList = () => {
               data={productList}
               renderItem={({ item }) => (
                 <Product
-                  id={item.id}
-                  productName={item.productName}
-                  category={item.category}
-                  ammount={item.ammount}
-                  pricePerUnit={item.pricePerUnit}
-                  isInShoppingCart={item.isInShoppingCart}
+                  {...item}
                   toggleInCart={toggleInCart}
+                  toggleModal={toggleModal}
                   removeFromList={() => removeProductFromList(item.id)}
+                  handleEdit={handleEdit}
+                  setId={handleProductId}
                 />
               )}
               keyExtractor={(item) => `${item.id}`}
