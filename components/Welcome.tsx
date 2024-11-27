@@ -21,7 +21,7 @@ const WelcomePage = () => {
         </View>
         <Pressable style={styles.pressable}>
           <Link href={"./portfolio"} style={styles.pressableText}>
-            Clickeame
+            Portafolio
           </Link>
         </Pressable>
         <Pressable style={styles.pressableShoppingList}>
