@@ -6,7 +6,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-native-modal";
 import theme from "../styles/Colors";
 import { Picker } from "@react-native-picker/picker";
@@ -17,13 +17,48 @@ type ModalProps = {
   isVisible: boolean;
   toggleModal: () => void;
   addProduct: (newProduct: ProductProps) => void;
+  editProduct: (
+    id: string,
+    name: string,
+    productCategory: string,
+    productAmmount: number,
+    productPrice: number
+  ) => void;
+  wantsToEdit: boolean;
+  handleEdit: (newValue: boolean) => void;
+  productID: string;
+  productList: ProductProps[];
 };
 
-const FormModal = ({ isVisible, toggleModal, addProduct }: ModalProps) => {
+const FormModal = ({
+  isVisible,
+  toggleModal,
+  addProduct,
+  editProduct,
+  wantsToEdit,
+  handleEdit,
+  productID,
+  productList,
+}: ModalProps) => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [ammount, setAmmount] = useState("");
   const [pricePerUnit, setPricePerUnit] = useState("");
+
+  const loadProductValue = () => {
+    productList.forEach((product) => {
+      if (product.id === productID) {
+        setName(product.productName);
+        setCategory(product.category);
+        setAmmount(product.ammount.toString());
+        setPricePerUnit(product.pricePerUnit.toString());
+      }
+    });
+  };
+
+  useEffect(() => {
+    wantsToEdit ? loadProductValue() : {};
+  }, []);
 
   const checkAllInputs =
     name.trim().length === 0 ||
@@ -154,15 +189,24 @@ const FormModal = ({ isVisible, toggleModal, addProduct }: ModalProps) => {
                   checkAllInputs ? { opacity: 0.7 } : {},
                 ]}
                 onPress={() => {
+                  wantsToEdit
+                    ? editProduct(
+                        productID,
+                        name,
+                        category,
+                        Number(ammount),
+                        Number(pricePerUnit)
+                      )
+                    : addProduct({
+                        id: uuid.v4(),
+                        productName: name,
+                        category: category,
+                        ammount: Number(ammount),
+                        pricePerUnit: Number(pricePerUnit),
+                        isInShoppingCart: false,
+                      });
+                  handleEdit(false);
                   toggleModal();
-                  addProduct({
-                    id: uuid.v4(),
-                    productName: name,
-                    category: category,
-                    ammount: Number(ammount),
-                    pricePerUnit: Number(pricePerUnit),
-                    isInShoppingCart: false,
-                  });
                 }}
                 disabled={checkAllInputs}
               >
