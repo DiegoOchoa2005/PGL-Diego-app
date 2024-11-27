@@ -59,7 +59,9 @@ const ShoppingList = () => {
   const removeProductFromList = (id: string) => {
     setProductList(productList.filter((product) => product.id !== id));
   };
-
+  const removeAllProducts = () => {
+    setProductList([]);
+  };
   useEffect(() => {
     calculateTotalPrice();
   }, [productList]);
@@ -141,9 +143,23 @@ const ShoppingList = () => {
             Precio total: {totalPrice.toFixed(2)}€
           </Text>
         </View>
-        <Pressable style={styles.pressable} onPress={toggleModal}>
-          <Text style={styles.pressableText}>AÑADIR PRODUCTO</Text>
-        </Pressable>
+        <View style={styles.pressableButtons}>
+          <Pressable style={styles.pressableAddProduct} onPress={toggleModal}>
+            <Text style={styles.pressableAddProductsText}>AÑADIR PRODUCTO</Text>
+          </Pressable>
+          {productList.length > 0 ? (
+            <Pressable
+              style={styles.pressableDeleteAllProducts}
+              onPress={removeAllProducts}
+            >
+              <Text style={styles.pressableDeleteAllroductsText}>
+                ELIMINAR TODOS LOS PRODUCTOS
+              </Text>
+            </Pressable>
+          ) : (
+            <></>
+          )}
+        </View>
       </View>
     </View>
   );
@@ -189,7 +205,7 @@ const styles = StyleSheet.create({
   productList: {
     width: "100%",
     padding: 5,
-    height: screenHeigth - 400,
+    height: screenHeigth - 460,
   },
   statusListText: {
     marginTop: "auto",
@@ -209,15 +225,21 @@ const styles = StyleSheet.create({
   totalPrice: {
     alignItems: "center",
     width: "80%",
+    marginVertical: "auto",
   },
   priceInformation: {
     fontSize: 24,
     fontWeight: "bold",
     color: theme.light.textSecondary,
   },
-  pressable: {
+  pressableButtons: {
+    flexDirection: "column",
+    width: "100%",
+    marginVertical: "auto",
+  },
+  pressableAddProduct: {
     marginHorizontal: "auto",
-    marginVertical: 20,
+    marginVertical: 5,
     backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     borderWidth: 1,
@@ -225,7 +247,24 @@ const styles = StyleSheet.create({
     borderColor: theme.light.borderColor,
     width: "80%",
   },
-  pressableText: {
+  pressableDeleteAllProducts: {
+    marginHorizontal: "auto",
+    marginVertical: 5,
+    backgroundColor: theme.light.backgroundSecondary,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderStyle: "dashed",
+    borderColor: theme.light.borderColor,
+    width: "80%",
+  },
+  pressableDeleteAllroductsText: {
+    color: theme.light.textPrimary,
+    fontSize: 16,
+    fontWeight: "bold",
+    padding: 7,
+    textAlign: "center",
+  },
+  pressableAddProductsText: {
     color: theme.light.textPrimary,
     fontSize: 24,
     fontWeight: "bold",
