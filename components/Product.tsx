@@ -1,6 +1,7 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import theme from "../styles/Colors";
 import Entypo from "@expo/vector-icons/Entypo";
+import AntDesign from "@expo/vector-icons/AntDesign";
 export type ProductProps = {
   id: string;
   productName: string;
@@ -26,7 +27,7 @@ const Product = ({
   toggleInCart,
   toggleModal,
   handleEdit,
-  setId: getId,
+  setId,
 }: ProductProps) => {
   const checkCategory = (category: string) => {
     switch (category.toLowerCase()) {
@@ -66,7 +67,11 @@ const Product = ({
       />
     );
   };
-
+  const wantsToEdit = () => {
+    toggleModal!();
+    handleEdit!(true);
+    setId!(id);
+  };
   return (
     <Pressable
       onPress={() => {
@@ -104,26 +109,19 @@ const Product = ({
             />
           </View>
           <View style={styles.pressableButtons}>
-            <Pressable
-              style={styles.pressableEdit}
-              onPress={() => {
-                toggleModal!();
-                handleEdit!(true);
-                getId!(id);
-              }}
-            >
+            <Pressable style={styles.pressableEdit} onPress={wantsToEdit}>
               <Entypo
-                style={styles.trashIcon}
+                style={styles.pressableIcon}
                 name="edit"
                 size={20}
                 color={theme.light.textPrimary}
               />
             </Pressable>
             <Pressable style={styles.pressableDelete} onPress={removeFromList}>
-              <Entypo
-                style={styles.trashIcon}
-                name="trash"
-                size={20}
+              <AntDesign
+                style={styles.pressableIcon}
+                name="closecircleo"
+                size={24}
                 color={theme.light.textPrimary}
               />
             </Pressable>
@@ -201,7 +199,7 @@ const styles = StyleSheet.create({
   icon: {
     marginTop: 2,
   },
-  trashIcon: {
+  pressableIcon: {
     textAlign: "center",
     padding: 10,
   },
