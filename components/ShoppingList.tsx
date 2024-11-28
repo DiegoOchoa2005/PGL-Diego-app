@@ -12,7 +12,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import React, { useEffect, useState } from "react";
 import theme from "../styles/Colors";
 import Product, { ProductProps } from "./Product";
-import FormModal from "./Modal";
+import FormModal from "./FormModal";
 const screenWidth = Dimensions.get("window").width;
 const screenHeigth = Dimensions.get("screen").height;
 const ShoppingList = () => {
