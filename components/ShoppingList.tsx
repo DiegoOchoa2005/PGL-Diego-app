@@ -7,6 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
+import Entypo from "@expo/vector-icons/Entypo";
 
 import React, { useEffect, useState } from "react";
 import theme from "../styles/Colors";
@@ -66,22 +67,16 @@ const ShoppingList = () => {
     calculateTotalPrice();
   }, [productList]);
 
-  const editProduct = (
-    id: string,
-    name: string,
-    productCategory: string,
-    productAmmount: number,
-    productPrice: number
-  ) => {
+  const editProduct = (productToEdit: ProductProps) => {
     setProductList((prevList) =>
       prevList.map((product) =>
-        product.id === id
+        product.id === productToEdit.id
           ? {
               ...product,
-              productName: name,
-              category: productCategory,
-              ammount: productAmmount,
-              pricePerUnit: productPrice,
+              productName: productToEdit.productName,
+              category: productToEdit.category,
+              ammount: productToEdit.ammount,
+              pricePerUnit: productToEdit.pricePerUnit,
             }
           : product
       )
@@ -145,16 +140,24 @@ const ShoppingList = () => {
         </View>
         <View style={styles.pressableButtons}>
           <Pressable style={styles.pressableAddProduct} onPress={toggleModal}>
-            <Text style={styles.pressableAddProductsText}>AÑADIR PRODUCTO</Text>
+            <Entypo
+              style={styles.pressableAddIcon}
+              name="circle-with-plus"
+              size={20}
+              color={theme.light.textPrimary}
+            />
           </Pressable>
           {productList.length > 0 ? (
             <Pressable
               style={styles.pressableDeleteAllProducts}
               onPress={removeAllProducts}
             >
-              <Text style={styles.pressableDeleteAllroductsText}>
-                ELIMINAR TODOS LOS PRODUCTOS
-              </Text>
+              <Entypo
+                style={styles.pressableDeleteIcon}
+                name="trash"
+                size={20}
+                color={theme.light.textPrimary}
+              />
             </Pressable>
           ) : (
             <></>
@@ -205,7 +208,7 @@ const styles = StyleSheet.create({
   productList: {
     width: "100%",
     padding: 5,
-    height: screenHeigth - 460,
+    height: screenHeigth - 330,
   },
   statusListText: {
     marginTop: "auto",
@@ -228,12 +231,13 @@ const styles = StyleSheet.create({
     marginVertical: "auto",
   },
   priceInformation: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: "bold",
     color: theme.light.textSecondary,
   },
   pressableButtons: {
-    flexDirection: "column",
+    flexDirection: "row",
+    flexWrap: "nowrap",
     width: "100%",
     marginVertical: "auto",
   },
@@ -245,7 +249,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "dashed",
     borderColor: theme.light.borderColor,
-    width: "80%",
+    width: "20%",
   },
   pressableDeleteAllProducts: {
     marginHorizontal: "auto",
@@ -255,20 +259,18 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: "dashed",
     borderColor: theme.light.borderColor,
-    width: "80%",
+    width: "20%",
   },
-  pressableDeleteAllroductsText: {
+  pressableDeleteIcon: {
     color: theme.light.textPrimary,
-    fontSize: 16,
-    fontWeight: "bold",
-    padding: 7,
+    marginVertical: "auto",
     textAlign: "center",
+    padding: 10,
   },
-  pressableAddProductsText: {
+  pressableAddIcon: {
     color: theme.light.textPrimary,
-    fontSize: 24,
     fontWeight: "bold",
-    padding: 20,
+    padding: 10,
     textAlign: "center",
   },
 });
