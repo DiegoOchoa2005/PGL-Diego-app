@@ -17,13 +17,7 @@ type ModalProps = {
   isVisible: boolean;
   toggleModal: () => void;
   addProduct: (newProduct: ProductProps) => void;
-  editProduct: (
-    id: string,
-    name: string,
-    productCategory: string,
-    productAmmount: number,
-    productPrice: number
-  ) => void;
+  editProduct: (productToModify: ProductProps) => void;
   wantsToEdit: boolean;
   handleEdit: (newValue: boolean) => void;
   productID: string;
@@ -56,9 +50,35 @@ const FormModal = ({
     });
   };
 
+  const cancelOperation = () => {
+    toggleModal(), handleEdit(false);
+  };
+
   useEffect(() => {
     wantsToEdit ? loadProductValue() : {};
   }, []);
+
+  const handleProductListModification = () => {
+    wantsToEdit
+      ? editProduct({
+          id: productID,
+          productName: name,
+          category: category,
+          ammount: Number(ammount),
+          pricePerUnit: Number(pricePerUnit),
+          isInShoppingCart: false,
+        })
+      : addProduct({
+          id: uuid.v4(),
+          productName: name,
+          category: category,
+          ammount: Number(ammount),
+          pricePerUnit: Number(pricePerUnit),
+          isInShoppingCart: false,
+        });
+    handleEdit(false);
+    toggleModal();
+  };
 
   const checkAllInputs =
     name.trim().length === 0 ||
@@ -67,7 +87,7 @@ const FormModal = ({
     pricePerUnit.trim().length === 0;
 
   const handleImage = checkAllInputs
-    ? require("../assets/img/otherimages/anastasiatriste.png")
+    ? require("../assets/img/otherimages/xiaohyperdino.png")
     : require("../assets/img/boxImages/sandyWelcome.png");
 
   const handleProductName = (name: string) => {
@@ -179,7 +199,7 @@ const FormModal = ({
               </View>
             </View>
             <View style={styles.modalButtons}>
-              <Pressable style={styles.pressable} onPress={toggleModal}>
+              <Pressable style={styles.pressable} onPress={cancelOperation}>
                 <Text style={styles.pressableText}>SALIR</Text>
               </Pressable>
 
@@ -188,26 +208,7 @@ const FormModal = ({
                   styles.pressable,
                   checkAllInputs ? { opacity: 0.7 } : {},
                 ]}
-                onPress={() => {
-                  wantsToEdit
-                    ? editProduct(
-                        productID,
-                        name,
-                        category,
-                        Number(ammount),
-                        Number(pricePerUnit)
-                      )
-                    : addProduct({
-                        id: uuid.v4(),
-                        productName: name,
-                        category: category,
-                        ammount: Number(ammount),
-                        pricePerUnit: Number(pricePerUnit),
-                        isInShoppingCart: false,
-                      });
-                  handleEdit(false);
-                  toggleModal();
-                }}
+                onPress={handleProductListModification}
                 disabled={checkAllInputs}
               >
                 <Text style={styles.pressableText}>CONFIRMAR</Text>
@@ -324,13 +325,14 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width: "50%",
+    marginTop: 10,
   },
   image: {
-    width: 150,
-    height: 150,
+    width: 170,
+    height: 170,
   },
   pressable: {
-    marginVertical: 20,
+    marginBottom: 20,
     backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     borderWidth: 1,
