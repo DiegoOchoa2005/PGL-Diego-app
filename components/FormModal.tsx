@@ -88,7 +88,7 @@ const FormModal = ({
 
   const handleImage = checkAllInputs
     ? require("../assets/img/otherimages/xiaohyperdino.png")
-    : require("../assets/img/boxImages/sandyWelcome.png");
+    : require("../assets/img/otherimages/xiaohyperdino2.png");
 
   const handleProductName = (name: string) => {
     setName(name);

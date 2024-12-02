@@ -44,9 +44,9 @@ const Product = ({
       case "vegsorfruits":
         return require("../assets/img/shoppingImages/vegsorfruits.png");
       case "others":
-        return require("../assets/img/boxImages/katarinaIcon.png");
+        return require("../assets/img/shoppingImages/amayaothers.png");
       default:
-        return require("../assets/img/boxImages/katarinaIcon.png");
+        return require("../assets/img/shoppingImages/amayaothers.png");
     }
   };
 
