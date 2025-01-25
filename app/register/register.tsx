@@ -1,4 +1,5 @@
 import {
+  Button,
   Dimensions,
   Image,
   Pressable,
@@ -9,30 +10,64 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import theme from "../../styles/Colors";
+import { registerService } from "../../services/registerService";
+import { User } from "../../type/UserType";
+import Toast from "react-native-toast-message";
+import { Redirect, router, useRouter } from "expo-router";
 const screenWidth = Dimensions.get("window").width;
 const screenHeigth = Dimensions.get("screen").height;
+const initialUserData: User = {
+  fullName: "",
+  email: "",
+  pswd: "",
+};
 const RegisterPage = () => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userData, setUserData] = useState<User>(initialUserData);
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const router = useRouter();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
   const handleFullName = (fullName: string) => {
-    setFullName(fullName);
+    setUserData({
+      ...userData,
+      fullName: fullName,
+    });
   };
 
   const handleEmail = (email: string) => {
-    setEmail(email);
+    setUserData({
+      ...userData,
+      email: email,
+    });
+    setIsEmailValid(emailRegex.test(email));
   };
 
   const handlePassword = (password: string) => {
-    setPassword(password);
+    setUserData({
+      ...userData,
+      pswd: password,
+    });
+    setIsPasswordValid(passwordRegex.test(password));
+  };
+
+  const sendUserData = async () => {
+    try {
+      const response = await registerService.registerUser(userData);
+      if (response === 201) {
+        router.navigate("../login/login");
+      }
+    } catch (error) {}
   };
 
   const checkAllInputs =
-    fullName.trim().length === 0 ||
-    email.trim().length === 0 ||
-    password.trim().length === 0 ||
-    console.log(password);
+    userData.fullName.length === 0 ||
+    userData.email.trim().length === 0 ||
+    userData.pswd.trim().length === 0 ||
+    !isEmailValid ||
+    !isPasswordValid;
+
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
@@ -66,32 +101,40 @@ const RegisterPage = () => {
             placeholder="Nombre Completo"
             style={styles.textInputs}
             onChangeText={(fullName) => handleFullName(fullName)}
-            value={fullName}
+            value={userData.fullName}
           />
           <Text style={styles.labelInputs}>Email</Text>
+
           <TextInput
             placeholder="Email"
-            style={styles.textInputs}
+            style={[
+              styles.textInputs,
+              { borderColor: isEmailValid ? theme.light.borderColor : "red" },
+            ]}
             keyboardType="email-address"
             onChangeText={(email) => handleEmail(email)}
-            value={email}
+            value={userData.email}
           />
+
           <Text style={styles.labelInputs}>Contraseña</Text>
           <TextInput
             placeholder="Contraseña"
-            style={styles.textInputs}
-            secureTextEntry={true}
+            style={[
+              styles.textInputs,
+              {
+                borderColor: isPasswordValid ? theme.light.borderColor : "red",
+              },
+            ]}
             onChangeText={(pass) => handlePassword(pass)}
-            value={password}
+            value={userData.pswd}
           />
           <Pressable
             style={[
               styles.registerButton,
-              {
-                opacity: checkAllInputs ? 0.5 : 1,
-              },
+              { opacity: checkAllInputs ? 0.5 : 1 },
             ]}
-            disabled={checkAllInputs!}
+            disabled={checkAllInputs}
+            onPress={sendUserData}
           >
             <Text
               style={{
@@ -105,6 +148,7 @@ const RegisterPage = () => {
             </Text>
           </Pressable>
         </View>
+        <Toast position="bottom" bottomOffset={20} />
       </View>
     </View>
   );
