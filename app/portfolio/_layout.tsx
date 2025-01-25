@@ -16,7 +16,6 @@ const TabsLayout = () => {
         options={{
           title: "Hobbies",
           tabBarIcon: () => <Entypo name="book" />,
-          href: "/portfolio/hobbies",
         }}
       />
       <Tabs.Screen
@@ -24,7 +23,6 @@ const TabsLayout = () => {
         options={{
           title: "Repository",
           tabBarIcon: () => <Entypo name="github" />,
-          href: "/portfolio/repository",
         }}
       />
     </Tabs>
