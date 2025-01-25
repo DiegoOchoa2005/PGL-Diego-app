@@ -28,7 +28,7 @@ export default HobbiesPage;
 
 const styles = StyleSheet.create({
   boxList: {
-    height: screenHeigth - 380,
+    height: screenHeigth - 420,
     marginHorizontal: "auto",
   },
   boxTitleInfo: {

@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: screenWidth,
-    height: screenHeigth - 130,
+    height: screenHeigth - 140,
     maxWidth: screenWidth,
     maxHeight: screenHeigth - 130,
     backgroundColor: theme.light.backgroundPrimary,
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   sandyImage: {
-    height: 410,
+    height: 370,
     width: screenWidth,
   },
 });

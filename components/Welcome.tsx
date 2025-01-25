@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     margin: 10,
-    marginTop: 30,
+    marginTop: 20,
     display: "flex",
     flexDirection: "column",
     backgroundColor: theme.light.backgroundPrimary,

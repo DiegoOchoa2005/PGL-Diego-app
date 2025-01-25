@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
   productList: {
     width: "100%",
     padding: 5,
-    height: screenHeigth - 330,
+    height: screenHeigth - 355,
   },
   statusListText: {
     marginTop: "auto",
