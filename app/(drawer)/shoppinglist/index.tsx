@@ -1,5 +1,5 @@
 import { StyleSheet, View } from "react-native";
-import ShoppingList from "../../components/ShoppingList";
+import ShoppingList from "../../../components/ShoppingList";
 
 const ShoppingListPage = () => {
   return (

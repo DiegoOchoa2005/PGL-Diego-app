@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
 import Entypo from "@expo/vector-icons/Entypo";
-import PortFolioHeader from "../../components/PortFolioHeader";
+import PortFolioHeader from "../../../components/PortFolioHeader";
 const TabsLayout = () => {
   return (
     <Tabs

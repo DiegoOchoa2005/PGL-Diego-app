@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import QRCode from "react-native-qrcode-svg";
-import theme from "../../styles/Colors";
+import theme from "../../../styles/Colors";
 import { Audio } from "expo-av";
 
 const screenWidth = Dimensions.get("window").width;
@@ -15,15 +15,17 @@ const screenHeigth = Dimensions.get("window").height;
 const RepositoryPage = () => {
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [sandyImage, setImage] = useState(
-    require("../../assets/img/sandyInteractive/normalSandy.png")
+    require("../../../assets/img/sandyInteractive/normalSandy.png")
   );
   const [originalImage, setOriginalImage] = useState(true);
   const handleSandyImage = () => {
     if (originalImage) {
       playSound();
-      setImage(require("../../assets/img/sandyInteractive/sandySlapped.png"));
+      setImage(
+        require("../../../assets/img/sandyInteractive/sandySlapped.png")
+      );
     } else {
-      setImage(require("../../assets/img/sandyInteractive/normalSandy.png"));
+      setImage(require("../../../assets/img/sandyInteractive/normalSandy.png"));
     }
     setOriginalImage(!originalImage);
   };
@@ -31,7 +33,7 @@ const RepositoryPage = () => {
     const loadSound = async () => {
       try {
         const { sound } = await Audio.Sound.createAsync(
-          require("../../sounds/cachetada.mp3")
+          require("../../../sounds/cachetada.mp3")
         );
         setSound(sound);
       } catch (error) {
@@ -58,7 +60,7 @@ const RepositoryPage = () => {
           <QRCode
             size={110}
             value="https://github.com/DiegoOchoa2005/pgl-portfolio-app"
-            logo={require("../../assets/img/boxImages/sandyLogo.png")}
+            logo={require("../../../assets/img/boxImages/sandyLogo.png")}
             logoSize={20}
           />
         </View>

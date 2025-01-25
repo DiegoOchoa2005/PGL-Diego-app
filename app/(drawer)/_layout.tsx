@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import React from "react";
-import ThemeProvider from "../provider/ThemeProvider";
+import ThemeProvider from "../../provider/ThemeProvider";
 import { Drawer } from "expo-router/drawer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -10,9 +10,7 @@ const AppLayout = () => {
       <ThemeProvider>
         <Drawer
           screenOptions={{
-            headerStyle: {
-              height: 60,
-            },
+            headerStatusBarHeight: -25,
           }}
         >
           <Drawer.Screen
