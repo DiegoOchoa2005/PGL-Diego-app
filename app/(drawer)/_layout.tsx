@@ -9,7 +9,6 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import theme from "../../styles/Colors";
-import Entypo from "@expo/vector-icons/Entypo";
 import { asyncStorageService } from "../../services/asyncStorageService";
 import { router } from "expo-router";
 const AppLayout = () => {
