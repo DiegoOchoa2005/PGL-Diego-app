@@ -14,6 +14,9 @@ import { User } from "../../type/UserType";
 import { router } from "expo-router";
 import { Image as Gif } from "expo-image";
 import { KURUKURU, WU_AI_NI } from "../../assets/gifs/chibis";
+import { Audio } from "expo-av";
+import handleSounds from "../../sounds/SoundHandler";
+
 const screenHeigth = Dimensions.get("screen").height;
 const initialUserData: User = {
   fullName: "",
@@ -138,16 +141,20 @@ const RegisterPage = () => {
             </Text>
           </Pressable>
           <View style={{ display: "flex", flexDirection: "row" }}>
-            <Gif
-              source={{ uri: WU_AI_NI }}
-              style={{ width: 200, height: 200 }}
-              autoplay
-            />
-            <Gif
-              source={{ uri: KURUKURU }}
-              style={{ width: 200, height: 200 }}
-              autoplay
-            />
+            <Pressable onPress={() => handleSounds("wo ai ni")}>
+              <Gif
+                source={{ uri: WU_AI_NI }}
+                style={{ width: 200, height: 200 }}
+                autoplay
+              />
+            </Pressable>
+            <Pressable onPress={() => handleSounds("kurukuru")}>
+              <Gif
+                source={{ uri: KURUKURU }}
+                style={{ width: 200, height: 200 }}
+                autoplay
+              />
+            </Pressable>
           </View>
         </View>
       </View>
