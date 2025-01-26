@@ -20,12 +20,12 @@ const WelcomePage = () => {
           />
         </View>
         <Pressable style={styles.pressable}>
-          <Link href={"./portfolio"} style={styles.pressableText}>
+          <Link href={"../portfolio"} style={styles.pressableText}>
             Portafolio
           </Link>
         </Pressable>
         <Pressable style={styles.pressableShoppingList}>
-          <Link href={"./shoppinglist"} style={styles.pressableText}>
+          <Link href={"../shoppinglist"} style={styles.pressableText}>
             Lista de compras
           </Link>
         </Pressable>
