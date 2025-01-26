@@ -1,5 +1,4 @@
 import {
-  Button,
   Dimensions,
   Image,
   Pressable,
@@ -13,6 +12,8 @@ import theme from "../../styles/Colors";
 import { registerService } from "../../services/registerService";
 import { User } from "../../type/UserType";
 import { router } from "expo-router";
+import { Image as Gif } from "expo-image";
+import { KURUKURU, WU_AI_NI } from "../../assets/gifs/chibis";
 const screenHeigth = Dimensions.get("screen").height;
 const initialUserData: User = {
   fullName: "",
@@ -136,6 +137,18 @@ const RegisterPage = () => {
               Registrarse
             </Text>
           </Pressable>
+          <View style={{ display: "flex", flexDirection: "row" }}>
+            <Gif
+              source={{ uri: WU_AI_NI }}
+              style={{ width: 200, height: 200 }}
+              autoplay
+            />
+            <Gif
+              source={{ uri: KURUKURU }}
+              style={{ width: 200, height: 200 }}
+              autoplay
+            />
+          </View>
         </View>
       </View>
     </View>
