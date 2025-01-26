@@ -1,9 +1,9 @@
 import { Audio } from "expo-av";
 const soundMap: { [key: string]: any } = {
   baby: require("./baby.mp3"),
-  cachetada: require("./cachetada.mp3"),
+  slap: require("./slap.mp3"),
   kurukuru: require("./kurukuru.mp3"),
-  "wo ai ni": require("./wo ai ni.mp3"),
+  woaini: require("./woaini.mp3"),
 };
 
 const loadSound = async (fileName: string) => {

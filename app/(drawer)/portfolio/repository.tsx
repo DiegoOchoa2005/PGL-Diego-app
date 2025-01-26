@@ -5,10 +5,9 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import QRCode from "react-native-qrcode-svg";
 import theme from "../../../styles/Colors";
-import { Audio } from "expo-av";
 import handleSounds from "../../../sounds/SoundHandler";
 
 const screenWidth = Dimensions.get("window").width;
@@ -20,7 +19,7 @@ const RepositoryPage = () => {
   const [originalImage, setOriginalImage] = useState(true);
   const handleSandyImage = () => {
     if (originalImage) {
-      handleSounds("cachetada");
+      handleSounds("slap");
       setImage(
         require("../../../assets/img/sandyInteractive/sandySlapped.png")
       );

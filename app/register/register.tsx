@@ -141,7 +141,7 @@ const RegisterPage = () => {
             </Text>
           </Pressable>
           <View style={{ display: "flex", flexDirection: "row" }}>
-            <Pressable onPress={() => handleSounds("wo ai ni")}>
+            <Pressable onPress={() => handleSounds("woaini")}>
               <Gif
                 source={{ uri: WU_AI_NI }}
                 style={{ width: 200, height: 200 }}
