@@ -1,12 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ImageSourcePropType,
   Text,
   View,
   StyleSheet,
   Image,
+  Pressable,
 } from "react-native";
 import theme from "../styles/Colors";
+import { Audio } from "expo-av";
 
 export type CardProps = {
   avatar: ImageSourcePropType;
@@ -15,11 +17,39 @@ export type CardProps = {
 };
 
 export const Card = ({ avatar, title, description }: CardProps) => {
+  const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const loadSound = async () => {
+    try {
+      const { sound } = await Audio.Sound.createAsync(
+        require("../sounds/baby.mp3")
+      );
+      setSound(sound);
+    } catch (error) {
+      console.error("Error al cargar el sonido:", error);
+    }
+  };
+  const playSound = async () => {
+    await loadSound();
+    if (sound != null) {
+      await sound.playAsync();
+    }
+  };
+
+  const handleSounds = async () => {
+    await loadSound();
+    await playSound();
+  };
+
   return (
     <View style={styles.cardContainer}>
-      <View style={styles.cardAvatar}>
+      <Pressable
+        style={styles.cardAvatar}
+        onPress={() => {
+          handleSounds();
+        }}
+      >
         <Image style={styles.avatar} source={avatar} />
-      </View>
+      </Pressable>
       <View style={styles.cardInfo}>
         <Text style={styles.cardTitle}>{title}</Text>
         <Text style={styles.cardDescription}>{description}</Text>
