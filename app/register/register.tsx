@@ -12,9 +12,7 @@ import React, { useState } from "react";
 import theme from "../../styles/Colors";
 import { registerService } from "../../services/registerService";
 import { User } from "../../type/UserType";
-import Toast from "react-native-toast-message";
-import { Redirect, router, useRouter } from "expo-router";
-const screenWidth = Dimensions.get("window").width;
+import { router } from "expo-router";
 const screenHeigth = Dimensions.get("screen").height;
 const initialUserData: User = {
   fullName: "",
@@ -25,9 +23,8 @@ const RegisterPage = () => {
   const [userData, setUserData] = useState<User>(initialUserData);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
-  const router = useRouter();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{10,}$/;
 
   const handleFullName = (fullName: string) => {
     setUserData({
@@ -53,12 +50,12 @@ const RegisterPage = () => {
   };
 
   const sendUserData = async () => {
-    try {
-      const response = await registerService.registerUser(userData);
+    const response = await registerService.registerUser(userData);
+    setTimeout(() => {
       if (response === 201) {
         router.navigate("../login/login");
       }
-    } catch (error) {}
+    }, 2500);
   };
 
   const checkAllInputs =
@@ -71,17 +68,8 @@ const RegisterPage = () => {
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <View style={styles.title}>
-          <Text
-            style={{
-              fontSize: 40,
-              textAlign: "left",
-              paddingLeft: 20,
-              fontWeight: "bold",
-            }}
-          >
-            Registro
-          </Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Registro</Text>
         </View>
         <View style={styles.inputs}>
           <View style={{ display: "flex", flexDirection: "row" }}>
@@ -127,6 +115,7 @@ const RegisterPage = () => {
             ]}
             onChangeText={(pass) => handlePassword(pass)}
             value={userData.pswd}
+            secureTextEntry={true}
           />
           <Pressable
             style={[
@@ -148,7 +137,6 @@ const RegisterPage = () => {
             </Text>
           </Pressable>
         </View>
-        <Toast position="bottom" bottomOffset={20} />
       </View>
     </View>
   );
@@ -173,10 +161,16 @@ const styles = StyleSheet.create({
     borderColor: theme.light.borderColor,
     height: "95%",
   },
-  title: {
+  titleContainer: {
     display: "flex",
     flexDirection: "row",
     marginTop: screenHeigth / 9,
+  },
+  title: {
+    fontSize: 40,
+    textAlign: "left",
+    paddingLeft: 20,
+    fontWeight: "bold",
   },
   inputs: {
     flex: 1,

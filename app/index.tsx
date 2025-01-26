@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-
-import { StyleSheet, View } from "react-native";
-import theme from "../styles/Colors";
-
 import { asyncStorageService } from "../services/asyncStorageService";
 import { router } from "expo-router";
 
 const AppPage = () => {
   const [isLogged, setIsLogged] = useState<boolean | null>(null);
-  const handlePages = async () => {
+  const handleToken = async () => {
     const token = await asyncStorageService.getItem();
     if (token) {
       setIsLogged(true);
@@ -17,7 +13,7 @@ const AppPage = () => {
     }
   };
   useEffect(() => {
-    handlePages();
+    handleToken();
   }, []);
   useEffect(() => {
     if (isLogged !== null) {
@@ -28,14 +24,7 @@ const AppPage = () => {
       }
     }
   }, [isLogged]);
-  return <View style={styles.container}></View>;
+  return <></>;
 };
 
 export default AppPage;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.light.backgroundSecondary,
-  },
-});
