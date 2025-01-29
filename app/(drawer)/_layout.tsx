@@ -58,6 +58,13 @@ const AppLayout = () => {
             drawerLabel: "Lista de compras",
           }}
         />
+        <Drawer.Screen
+          name="camera/camera"
+          options={{
+            title: "App :3",
+            drawerLabel: "Galería",
+          }}
+        />
       </Drawer>
     </GestureHandlerRootView>
   );
