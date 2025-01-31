@@ -1,5 +1,5 @@
 export type ImageData = {
-  id: number;
+  id?: number;
   height: number;
   width: number;
   encodedData: string;
