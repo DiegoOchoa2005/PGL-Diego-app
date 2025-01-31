@@ -1,5 +1,7 @@
 import {
   Button,
+  Dimensions,
+  FlatList,
   Image,
   Pressable,
   StyleSheet,
@@ -14,13 +16,18 @@ import theme from "../../../styles/Colors";
 import { asyncStorageService } from "../../../services/asyncStorageService";
 import { cameraService } from "../../../services/cameraService";
 import Camera from "../../../components/Camera";
+const screenHeigth = Dimensions.get("screen").height;
 
 const cameraPage = () => {
   const [images, setImages] = useState<ImageData[]>([]);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
+  const [userToken, setUserToken] = useState("");
+
   const getImages = async () => {
     const token = await asyncStorageService.getItem();
     const camImages = await cameraService.getAllImages(token!);
+
+    setUserToken(token!);
     if (camImages.length > 0) {
       setImages(camImages);
     }
@@ -28,24 +35,24 @@ const cameraPage = () => {
   const openCamera = async () => {
     setIsCameraOpen(true);
   };
-  const closeCamera = () => {
+  const closeCamera = async () => {
     setIsCameraOpen(false);
+    await getImages();
   };
   useEffect(() => {
     getImages();
   }, []);
-
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
         {isCameraOpen ? (
-          <Camera closeCamera={closeCamera} />
+          <Camera userToken={userToken} closeCamera={closeCamera} />
         ) : images.length === 0 ? (
           <View style={styles.noImagesContainer}>
             <View style={styles.noImagesContent}>
               <Text style={styles.titleMessage}>No hay imágenes</Text>
               <Image
-                style={styles.image}
+                style={styles.chibiImage}
                 source={require("../../../assets/img/otherimages/anastasiatriste.png")}
               />
               <TouchableOpacity style={styles.touchable} onPress={openCamera}>
@@ -54,7 +61,27 @@ const cameraPage = () => {
             </View>
           </View>
         ) : (
-          <></>
+          <>
+            <View style={styles.images}>
+              <FlatList
+                data={images}
+                renderItem={({ item }) => (
+                  <>
+                    <Image
+                      style={styles.imageItem}
+                      source={{
+                        uri: `data:image/jpg;base64,${item.encodedData}`,
+                      }}
+                    />
+                  </>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            </View>
+            <TouchableOpacity style={styles.touchable} onPress={openCamera}>
+              <Text style={styles.touchableText}>Tomar foto</Text>
+            </TouchableOpacity>
+          </>
         )}
       </View>
     </View>
@@ -98,7 +125,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
-  image: {
+  chibiImage: {
     height: 200,
     width: 200,
   },
@@ -118,5 +145,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     padding: 10,
     textAlign: "center",
+  },
+  images: {
+    height: "80%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  imageItem: {
+    height: 100,
+    width: 100,
   },
 });
