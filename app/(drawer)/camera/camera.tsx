@@ -1,9 +1,7 @@
 import {
-  Button,
   Dimensions,
   FlatList,
   Image,
-  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
