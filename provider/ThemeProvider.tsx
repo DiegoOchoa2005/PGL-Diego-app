@@ -12,7 +12,6 @@ const ThemeProvider = ({ children }: ThemeProviderProps) => {
   useEffect(() => {
     const listener = EventRegister.addEventListener("changeTheme", (data) => {
       setDarkMode(data);
-      console.log(data);
     });
     return () => {
       EventRegister.removeEventListener(listener.toString());
