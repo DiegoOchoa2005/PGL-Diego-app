@@ -10,7 +10,16 @@ const HobbiesPage = () => {
   const theme = useContext(ThemeContext);
   return (
     <View style={{ backgroundColor: theme.backgroundPrimary, height: "100%" }}>
-      <Text style={styles.boxTitleInfo}>Me gustan cosas como:</Text>
+      <Text
+        style={[
+          styles.boxTitleInfo,
+          {
+            color: theme.textPrimary,
+          },
+        ]}
+      >
+        Me gustan cosas como:
+      </Text>
       <View style={styles.boxList}>
         <FlatList
           data={boxes}

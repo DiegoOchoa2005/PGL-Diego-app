@@ -11,6 +11,7 @@ import {
 import theme from "../../styles/Colors";
 import { asyncStorageService } from "../../services/asyncStorageService";
 import { router } from "expo-router";
+import ThemeSwitch from "../../components/ThemeSwitch";
 const AppLayout = () => {
   const handleRemoveToken = async () => {
     await asyncStorageService.removeItem();
@@ -20,6 +21,7 @@ const AppLayout = () => {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
+        <ThemeSwitch />
         <DrawerItem
           style={styles.logOut}
           label="Cerrar sesión 😢"

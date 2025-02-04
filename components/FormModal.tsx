@@ -178,6 +178,7 @@ const FormModal = ({
                     },
                   ]}
                   placeholder="Doritos con mayonesa..."
+                  placeholderTextColor={theme.textPrimary}
                   onChangeText={handleProductName}
                   value={name}
                 />
@@ -204,6 +205,7 @@ const FormModal = ({
                     >
                       <Picker.Item
                         label="Categoría.."
+                        style={{ color: theme.textPrimary }}
                         value=""
                         enabled={false}
                       />
@@ -228,6 +230,7 @@ const FormModal = ({
                   </Text>
                   <TextInput
                     placeholder="Cantidad..."
+                    placeholderTextColor={theme.textPrimary}
                     keyboardType="numeric"
                     onChangeText={handleProductAmmount}
                     value={ammount}
@@ -251,6 +254,7 @@ const FormModal = ({
                   </Text>
                   <TextInput
                     placeholder="0.00€..."
+                    placeholderTextColor={theme.textPrimary}
                     style={[
                       styles.productNameInput,
                       {
@@ -280,7 +284,16 @@ const FormModal = ({
                 ]}
                 onPress={cancelOperation}
               >
-                <Text style={styles.pressableText}>SALIR</Text>
+                <Text
+                  style={[
+                    styles.pressableText,
+                    {
+                      color: theme.textPrimary,
+                    },
+                  ]}
+                >
+                  SALIR
+                </Text>
               </Pressable>
               <Pressable
                 style={[
@@ -294,7 +307,16 @@ const FormModal = ({
                 onPress={handleProductListModification}
                 disabled={checkAllInputs}
               >
-                <Text style={styles.pressableText}>CONFIRMAR</Text>
+                <Text
+                  style={[
+                    styles.pressableText,
+                    {
+                      color: theme.textPrimary,
+                    },
+                  ]}
+                >
+                  CONFIRMAR
+                </Text>
               </Pressable>
             </View>
           </View>
@@ -413,6 +435,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 10,
     textAlign: "center",
+    fontWeight: "bold",
   },
   modalButtons: {
     flexDirection: "row",

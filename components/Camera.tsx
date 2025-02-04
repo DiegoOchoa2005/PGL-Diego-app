@@ -75,21 +75,43 @@ const Camera = ({ userToken, closeCamera, setLoading }: CameraProps) => {
   return (
     <View style={styles.container}>
       <View
-        style={[styles.borderButtons, { backgroundColor: theme.borderColor }]}
+        style={[
+          styles.borderButtons,
+          { backgroundColor: theme.backgroundPrimary },
+        ]}
       >
         <Pressable onPress={() => toggleFlash()}>
-          <Ionicons name={"flash"} size={32} style={styles.iconButton} />
+          <Ionicons
+            name={"flash"}
+            size={32}
+            style={[
+              styles.iconButton,
+              {
+                color: theme.textPrimary,
+              },
+            ]}
+          />
         </Pressable>
         <Pressable onPress={() => toggleFacing()}>
           <Ionicons
             name={"camera-reverse"}
             size={40}
-            style={styles.iconButton}
+            style={[
+              styles.iconButton,
+              {
+                color: theme.textPrimary,
+              },
+            ]}
           />
         </Pressable>
         <Pressable onPress={() => closeCamera()}>
           <Entypo
-            style={styles.iconButton}
+            style={[
+              styles.iconButton,
+              {
+                color: theme.textPrimary,
+              },
+            ]}
             name="circle-with-cross"
             size={30}
           />
@@ -106,14 +128,26 @@ const Camera = ({ userToken, closeCamera, setLoading }: CameraProps) => {
         }}
       ></CameraView>
       <View
-        style={[styles.borderButtons, { backgroundColor: theme.borderColor }]}
+        style={[
+          styles.borderButtons,
+          { backgroundColor: theme.backgroundPrimary },
+        ]}
       >
         <Pressable
           onPress={() => {
             takePicture();
           }}
         >
-          <Entypo style={styles.iconButton} name="circle" size={50} />
+          <Entypo
+            style={[
+              styles.iconButton,
+              {
+                color: theme.textPrimary,
+              },
+            ]}
+            name="circle"
+            size={50}
+          />
         </Pressable>
       </View>
     </View>
@@ -145,7 +179,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   iconButton: {
-    color: "white",
     marginVertical: "auto",
     textAlign: "center",
     padding: 10,
