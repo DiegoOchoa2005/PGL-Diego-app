@@ -6,12 +6,13 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "react-native-modal";
 import theme from "../styles/Colors";
 import { Picker } from "@react-native-picker/picker";
 import { ProductProps } from "./Product";
 import uuid from "react-native-uuid";
+import ThemeContext from "../context/ThemeContext";
 
 type ModalProps = {
   isVisible: boolean;
@@ -34,6 +35,7 @@ const FormModal = ({
   productID,
   productList,
 }: ModalProps) => {
+  const theme = useContext(ThemeContext);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [ammount, setAmmount] = useState("");
@@ -127,16 +129,54 @@ const FormModal = ({
           justifyContent: "center",
         }}
       >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalHeaderText}>DATOS DEL PRODUCTO</Text>
+        <View
+          style={[
+            styles.modalContainer,
+            {
+              backgroundColor: theme.backgroundSecondary,
+              borderColor: theme.borderColor,
+            },
+          ]}
+        >
+          <View
+            style={[
+              styles.modalContent,
+              {
+                backgroundColor: theme.backgroundPrimary,
+                borderColor: theme.borderColor,
+              },
+            ]}
+          >
+            <View
+              style={[
+                styles.modalHeader,
+                {
+                  backgroundColor: theme.backgroundSecondary,
+                  borderColor: theme.borderColor,
+                },
+              ]}
+            >
+              <Text
+                style={[styles.modalHeaderText, { color: theme.textPrimary }]}
+              >
+                DATOS DEL PRODUCTO
+              </Text>
             </View>
             <View style={styles.modalInputs}>
               <View style={styles.nameContainer}>
-                <Text style={styles.productLabels}>Nombre:</Text>
+                <Text
+                  style={[styles.productLabels, { color: theme.textPrimary }]}
+                >
+                  Nombre:
+                </Text>
                 <TextInput
-                  style={styles.productNameInput}
+                  style={[
+                    styles.productNameInput,
+                    {
+                      backgroundColor: theme.backgroundSecondary,
+                      borderColor: theme.borderColor,
+                    },
+                  ]}
                   placeholder="Doritos con mayonesa..."
                   onChangeText={handleProductName}
                   value={name}
@@ -144,8 +184,20 @@ const FormModal = ({
               </View>
               <View style={styles.categoryAndAmmountContainer}>
                 <View style={styles.productCategoryContainer}>
-                  <Text style={styles.productLabels}>Categoría:</Text>
-                  <View style={styles.pickerContainer}>
+                  <Text
+                    style={[styles.productLabels, { color: theme.textPrimary }]}
+                  >
+                    Categoría:
+                  </Text>
+                  <View
+                    style={[
+                      styles.pickerContainer,
+                      {
+                        backgroundColor: theme.backgroundSecondary,
+                        borderColor: theme.borderColor,
+                      },
+                    ]}
+                  >
                     <Picker
                       selectedValue={category}
                       onValueChange={(itemValue) => handleCategory(itemValue)}
@@ -164,29 +216,48 @@ const FormModal = ({
                         value="VegsOrFruits"
                       />
                       <Picker.Item label="Dulces" value="Sweets" />
-
                       <Picker.Item label="Otros" value="Others" />
                     </Picker>
                   </View>
                 </View>
                 <View style={styles.productAmmountContainer}>
-                  <Text style={styles.productLabels}>Cantidad:</Text>
+                  <Text
+                    style={[styles.productLabels, { color: theme.textPrimary }]}
+                  >
+                    Cantidad:
+                  </Text>
                   <TextInput
                     placeholder="Cantidad..."
                     keyboardType="numeric"
                     onChangeText={handleProductAmmount}
                     value={ammount}
-                    style={styles.productAmmountInput}
+                    style={[
+                      styles.productAmmountInput,
+                      {
+                        backgroundColor: theme.backgroundSecondary,
+                        borderColor: theme.borderColor,
+                      },
+                    ]}
                     maxLength={3}
                   />
                 </View>
               </View>
               <View style={styles.pricePerUnitAndImageContainer}>
                 <View style={styles.pricePerUnitContainer}>
-                  <Text style={styles.productLabels}>Precio c/u:</Text>
+                  <Text
+                    style={[styles.productLabels, { color: theme.textPrimary }]}
+                  >
+                    Precio c/u:
+                  </Text>
                   <TextInput
                     placeholder="0.00€..."
-                    style={styles.productNameInput}
+                    style={[
+                      styles.productNameInput,
+                      {
+                        backgroundColor: theme.backgroundSecondary,
+                        borderColor: theme.borderColor,
+                      },
+                    ]}
                     keyboardType="decimal-pad"
                     onChangeText={handleProductPrice}
                     value={pricePerUnit}
@@ -199,14 +270,26 @@ const FormModal = ({
               </View>
             </View>
             <View style={styles.modalButtons}>
-              <Pressable style={styles.pressable} onPress={cancelOperation}>
+              <Pressable
+                style={[
+                  styles.pressable,
+                  {
+                    backgroundColor: theme.backgroundSecondary,
+                    borderColor: theme.borderColor,
+                  },
+                ]}
+                onPress={cancelOperation}
+              >
                 <Text style={styles.pressableText}>SALIR</Text>
               </Pressable>
-
               <Pressable
                 style={[
                   styles.pressable,
                   checkAllInputs ? { opacity: 0.7 } : {},
+                  {
+                    backgroundColor: theme.backgroundSecondary,
+                    borderColor: theme.borderColor,
+                  },
                 ]}
                 onPress={handleProductListModification}
                 disabled={checkAllInputs}
@@ -225,22 +308,18 @@ export default FormModal;
 
 const styles = StyleSheet.create({
   modalContainer: {
-    backgroundColor: theme.light.backgroundSecondary,
     padding: 20,
     borderRadius: 15,
     borderWidth: 1,
-    borderColor: theme.light.borderColor,
     width: "90%",
   },
   modalContent: {
     flexDirection: "column",
     alignItems: "center",
     width: "100%",
-    backgroundColor: theme.light.backgroundPrimary,
     borderRadius: 15,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
   },
   modalHeader: {
     width: "90%",
@@ -249,15 +328,12 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
-    backgroundColor: theme.light.backgroundSecondary,
     marginTop: 5,
   },
   modalHeaderText: {
     marginVertical: "auto",
     fontSize: 24,
     fontWeight: "bold",
-    color: theme.light.textPrimary,
     fontStyle: "italic",
   },
   modalInputs: {
@@ -271,17 +347,14 @@ const styles = StyleSheet.create({
   productLabels: {
     fontSize: 18,
     fontWeight: "bold",
-    color: theme.light.textPrimary,
+
     fontStyle: "italic",
     marginLeft: 15,
   },
-
   productNameInput: {
     width: "100%",
-    backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: theme.light.borderColor,
   },
 
   categoryAndAmmountContainer: {
@@ -294,10 +367,9 @@ const styles = StyleSheet.create({
     width: "60%",
   },
   pickerContainer: {
-    backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: theme.light.borderColor,
+
     height: 50,
     width: "100%",
   },
@@ -307,10 +379,8 @@ const styles = StyleSheet.create({
   },
   productAmmountInput: {
     width: "100%",
-    backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: theme.light.borderColor,
     height: 50,
   },
   pricePerUnitAndImageContainer: {
@@ -333,11 +403,9 @@ const styles = StyleSheet.create({
   },
   pressable: {
     marginBottom: 20,
-    backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
     width: "45%",
     paddingVertical: 5,
   },

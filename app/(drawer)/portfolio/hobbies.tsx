@@ -1,15 +1,15 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import Box from "../../../components/Box";
 import { boxes } from "../../../data/BoxData";
 import { Dimensions } from "react-native";
 import theme from "../../../styles/Colors";
+import ThemeContext from "../../../context/ThemeContext";
 const screenHeigth = Dimensions.get("screen").height;
 const HobbiesPage = () => {
+  const theme = useContext(ThemeContext);
   return (
-    <View
-      style={{ backgroundColor: theme.light.backgroundPrimary, height: "100%" }}
-    >
+    <View style={{ backgroundColor: theme.backgroundPrimary, height: "100%" }}>
       <Text style={styles.boxTitleInfo}>Me gustan cosas como:</Text>
       <View style={styles.boxList}>
         <FlatList

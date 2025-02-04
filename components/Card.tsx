@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import {
   ImageSourcePropType,
   Text,
@@ -7,9 +7,8 @@ import {
   Image,
   Pressable,
 } from "react-native";
-import theme from "../styles/Colors";
-import { Audio } from "expo-av";
 import handleSounds from "../sounds/SoundHandler";
+import ThemeContext from "../context/ThemeContext";
 
 export type CardProps = {
   avatar: ImageSourcePropType;
@@ -18,6 +17,7 @@ export type CardProps = {
 };
 
 export const Card = ({ avatar, title, description }: CardProps) => {
+  const theme = useContext(ThemeContext);
   return (
     <View style={styles.cardContainer}>
       <Pressable
@@ -28,9 +28,21 @@ export const Card = ({ avatar, title, description }: CardProps) => {
       >
         <Image style={styles.avatar} source={avatar} />
       </Pressable>
-      <View style={styles.cardInfo}>
-        <Text style={styles.cardTitle}>{title}</Text>
-        <Text style={styles.cardDescription}>{description}</Text>
+      <View
+        style={[
+          styles.cardInfo,
+          {
+            backgroundColor: theme.backgroundSecondary,
+            borderColor: theme.borderColor,
+          },
+        ]}
+      >
+        <Text style={[styles.cardTitle, { color: theme.textPrimary }]}>
+          {title}
+        </Text>
+        <Text style={[styles.cardDescription, { color: theme.textSecondary }]}>
+          {description}
+        </Text>
       </View>
     </View>
   );
@@ -56,8 +68,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     maxWidth: 390,
     maxHeight: 110,
-    backgroundColor: theme.light.backgroundSecondary,
-    borderColor: theme.light.borderColor,
   },
   cardAvatar: {
     marginHorizontal: "auto",
@@ -67,14 +77,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 22,
-    color: theme.light.textPrimary,
-    borderColor: theme.light.borderColor,
   },
   cardDescription: {
     padding: 5,
     fontSize: 16,
     textAlign: "justify",
-    color: theme.light.textSecondary,
   },
   avatar: {
     height: 100,

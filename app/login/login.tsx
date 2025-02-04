@@ -7,18 +7,21 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useState } from "react";
-import theme from "../../styles/Colors";
+import React, { useContext, useState } from "react";
 import { User } from "../../type/UserType";
 import { router } from "expo-router";
 import { loginService } from "../../services/loginService";
+import ThemeContext from "../../context/ThemeContext";
+
 const screenHeigth = Dimensions.get("screen").height;
 const initialUserData: User = {
   fullName: "",
   email: "",
   pswd: "",
 };
+
 const LoginPage = () => {
+  const theme = useContext(ThemeContext);
   const [userData, setUserData] = useState<User>(initialUserData);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
@@ -57,10 +60,20 @@ const LoginPage = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.wrapper}>
+    <View
+      style={[styles.container, { backgroundColor: theme.backgroundSecondary }]}
+    >
+      <View
+        style={[
+          styles.wrapper,
+          {
+            backgroundColor: theme.backgroundPrimary,
+            borderColor: theme.borderColor,
+          },
+        ]}
+      >
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>
+          <Text style={[styles.title, { color: theme.textPrimary }]}>
             Iniciar{"\n"}Sesión{"\n"}\{"(•◡•)"}/
           </Text>
         </View>
@@ -73,26 +86,34 @@ const LoginPage = () => {
                 { position: "absolute", right: -80, bottom: -5 },
               ]}
             />
-            <Text style={styles.labelInputs}>Email</Text>
+            <Text style={[styles.labelInputs, { color: theme.textPrimary }]}>
+              Email
+            </Text>
           </View>
           <TextInput
             placeholder="Email"
             style={[
               styles.textInputs,
-              { borderColor: isEmailValid ? theme.light.borderColor : "red" },
+              {
+                borderColor: isEmailValid ? theme.borderColor : "red",
+                backgroundColor: theme.backgroundSecondary,
+              },
             ]}
             keyboardType="email-address"
             onChangeText={(email) => handleEmail(email)}
             value={userData.email}
           />
 
-          <Text style={styles.labelInputs}>Contraseña</Text>
+          <Text style={[styles.labelInputs, { color: theme.textPrimary }]}>
+            Contraseña
+          </Text>
           <TextInput
             placeholder="Contraseña"
             style={[
               styles.textInputs,
               {
-                borderColor: isPasswordValid ? theme.light.borderColor : "red",
+                borderColor: isPasswordValid ? theme.borderColor : "red",
+                backgroundColor: theme.backgroundSecondary,
               },
             ]}
             onChangeText={(pass) => handlePassword(pass)}
@@ -103,7 +124,10 @@ const LoginPage = () => {
             <Pressable
               style={[
                 styles.registerButton,
-                { opacity: checkAllInputs ? 0.5 : 1 },
+                {
+                  opacity: checkAllInputs ? 0.5 : 1,
+                  backgroundColor: theme.backgroundSecondary,
+                },
               ]}
               disabled={checkAllInputs}
               onPress={sendUserData}
@@ -114,6 +138,7 @@ const LoginPage = () => {
                   fontWeight: "bold",
                   padding: 20,
                   textAlign: "center",
+                  color: theme.textPrimary,
                 }}
               >
                 Entrar
@@ -125,6 +150,7 @@ const LoginPage = () => {
                 fontWeight: "bold",
                 padding: 20,
                 textAlign: "center",
+                color: theme.textSecondary,
               }}
               onPress={() => router.navigate("../register/register")}
             >
@@ -143,18 +169,15 @@ export default LoginPage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.light.backgroundSecondary,
   },
   wrapper: {
     margin: 10,
     marginTop: 20,
     display: "flex",
     flexDirection: "column",
-    backgroundColor: theme.light.backgroundPrimary,
     borderRadius: 10,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
     height: "95%",
   },
   titleContainer: {
@@ -185,12 +208,10 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   textInputs: {
-    borderColor: theme.light.borderColor,
     borderWidth: 1,
     borderStyle: "solid",
     width: "90%",
     height: 40,
-    backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     alignSelf: "center",
     marginBottom: 15,
@@ -204,11 +225,9 @@ const styles = StyleSheet.create({
   registerButton: {
     marginHorizontal: "auto",
     marginTop: 10,
-    backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
     width: "45%",
   },
 });

@@ -9,7 +9,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { ImageData } from "../../../type/ImageData";
 
 import theme from "../../../styles/Colors";
@@ -19,8 +25,10 @@ import Camera from "../../../components/Camera";
 import ImageList from "../../../components/ImageList";
 import Loading from "../../../components/Loading";
 import { useFocusEffect } from "expo-router";
+import ThemeContext from "../../../context/ThemeContext";
 
 const cameraPage = () => {
+  const theme = useContext(ThemeContext);
   const [images, setImages] = useState<ImageData[]>([]);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [userToken, setUserToken] = useState("");
@@ -52,10 +60,25 @@ const cameraPage = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: theme.backgroundSecondary,
+        },
+      ]}
+    >
       <Loading visible={loading} />
 
-      <View style={styles.wrapper}>
+      <View
+        style={[
+          styles.wrapper,
+          {
+            backgroundColor: theme.backgroundPrimary,
+            borderColor: theme.borderColor,
+          },
+        ]}
+      >
         {isCameraOpen ? (
           <Camera
             userToken={userToken}
@@ -65,21 +88,66 @@ const cameraPage = () => {
         ) : images.length === 0 ? (
           <View style={styles.noImagesContainer}>
             <View style={styles.noImagesContent}>
-              <Text style={styles.titleMessage}>No hay imágenes</Text>
+              <Text
+                style={[
+                  styles.titleMessage,
+                  {
+                    color: theme.textPrimary,
+                  },
+                ]}
+              >
+                No hay imágenes
+              </Text>
               <Image
                 style={styles.chibiImage}
                 source={require("../../../assets/img/otherimages/anastasiatriste.png")}
               />
-              <TouchableOpacity style={styles.touchable} onPress={openCamera}>
-                <Text style={styles.touchableText}>Tomar foto</Text>
+              <TouchableOpacity
+                style={[
+                  styles.touchable,
+                  {
+                    backgroundColor: theme.backgroundSecondary,
+                    borderColor: theme.borderColor,
+                  },
+                ]}
+                onPress={openCamera}
+              >
+                <Text
+                  style={[
+                    styles.touchableText,
+                    {
+                      color: theme.textPrimary,
+                    },
+                  ]}
+                >
+                  Tomar foto
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
         ) : (
           <>
             <ImageList list={images} />
-            <TouchableOpacity style={styles.touchable} onPress={openCamera}>
-              <Text style={styles.touchableText}>Tomar foto</Text>
+            <TouchableOpacity
+              style={[
+                styles.touchable,
+                {
+                  backgroundColor: theme.backgroundSecondary,
+                  borderColor: theme.borderColor,
+                },
+              ]}
+              onPress={openCamera}
+            >
+              <Text
+                style={[
+                  styles.touchableText,
+                  {
+                    color: theme.textPrimary,
+                  },
+                ]}
+              >
+                Tomar foto
+              </Text>
             </TouchableOpacity>
           </>
         )}
@@ -93,7 +161,6 @@ export default cameraPage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.light.backgroundSecondary,
   },
   wrapper: {
     flex: 1,
@@ -101,18 +168,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
     display: "flex",
     flexDirection: "column",
-    backgroundColor: theme.light.backgroundPrimary,
     borderRadius: 10,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
     height: "95%",
   },
   titleMessage: {
     fontSize: 30,
     textAlign: "center",
     fontStyle: "italic",
-    color: theme.light.textPrimary,
     fontWeight: "bold",
   },
   noImagesContainer: {
@@ -133,15 +197,12 @@ const styles = StyleSheet.create({
     marginHorizontal: "auto",
     marginTop: 25,
     marginBottom: "auto",
-    backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
     width: "50%",
   },
   touchableText: {
-    color: theme.light.textPrimary,
     fontSize: 18,
     fontWeight: "bold",
     padding: 10,

@@ -1,11 +1,18 @@
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { Card } from "./Card";
 import theme from "../styles/Colors";
+import ThemeContext from "../context/ThemeContext";
 const screenWidth = Dimensions.get("window").width;
 const PortFolioHeader = () => {
+  const theme = useContext(ThemeContext);
   return (
-    <View style={styles.cardContainer}>
+    <View
+      style={[
+        styles.cardContainer,
+        { backgroundColor: theme.backgroundPrimary },
+      ]}
+    >
       <View>
         <Card
           avatar={require("../assets/img/boxImages/avatar.webp")}
@@ -26,6 +33,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: screenWidth,
-    backgroundColor: theme.light.backgroundPrimary,
   },
 });

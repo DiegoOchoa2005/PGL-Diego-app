@@ -1,7 +1,10 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { useContext } from "react";
 import theme from "../styles/Colors";
 import Entypo from "@expo/vector-icons/Entypo";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import ThemeContext from "../context/ThemeContext";
+
 export type ProductProps = {
   id: string;
   productName: string;
@@ -29,6 +32,8 @@ const Product = ({
   handleEdit,
   setId,
 }: ProductProps) => {
+  const theme = useContext(ThemeContext);
+
   const checkCategory = (category: string) => {
     switch (category.toLowerCase()) {
       case "bakery":
@@ -56,30 +61,40 @@ const Product = ({
         style={styles.icon}
         name="check"
         size={20}
-        color={theme.light.textPrimary}
+        color={theme.textPrimary}
       />
     ) : (
       <Entypo
         style={styles.icon}
         name="circle-with-cross"
         size={20}
-        color={theme.light.textPrimary}
+        color={theme.textPrimary}
       />
     );
   };
+
   const wantsToEdit = () => {
     toggleModal!();
     handleEdit!(true);
     setId!(id);
   };
+
   return (
     <Pressable
       onPress={() => {
         toggleInCart!(id);
       }}
     >
-      <View style={styles.container}>
-        <View style={styles.productBox}>
+      <View style={[styles.container]}>
+        <View
+          style={[
+            styles.productBox,
+            {
+              borderColor: theme.borderColor,
+              backgroundColor: theme.backgroundSecondary,
+            },
+          ]}
+        >
           <View style={styles.productInfo}>
             <Text
               style={[
@@ -90,39 +105,63 @@ const Product = ({
                       fontWeight: "bold",
                       color: "green",
                     }
-                  : {},
+                  : { color: theme.textPrimary },
               ]}
             >
               {productName}
             </Text>
-            <Text style={styles.productText}>Cantidad: {ammount}</Text>
-            <Text style={styles.productText}>Precio C/U: {pricePerUnit}€</Text>
+            <Text style={[styles.productText, { color: theme.textPrimary }]}>
+              Cantidad: {ammount}
+            </Text>
+            <Text style={[styles.productText, { color: theme.textPrimary }]}>
+              Precio C/U: {pricePerUnit}€
+            </Text>
             <View style={styles.shoppingStatus}>
-              <Text style={styles.productText}>Carrito: </Text>
+              <Text style={[styles.productText, { color: theme.textPrimary }]}>
+                Carrito:{" "}
+              </Text>
               {handleIcon()}
             </View>
           </View>
           <View style={styles.productCategory}>
             <Image
               source={checkCategory(category)}
-              style={styles.categoryImg}
+              style={[styles.categoryImg, { borderColor: theme.borderColor }]}
             />
           </View>
           <View style={styles.pressableButtons}>
-            <Pressable style={styles.pressableEdit} onPress={wantsToEdit}>
+            <Pressable
+              style={[
+                styles.pressableEdit,
+                {
+                  borderColor: theme.borderColor,
+                  backgroundColor: theme.backgroundPrimary,
+                },
+              ]}
+              onPress={wantsToEdit}
+            >
               <Entypo
                 style={styles.pressableIcon}
                 name="edit"
                 size={20}
-                color={theme.light.textPrimary}
+                color={theme.textPrimary}
               />
             </Pressable>
-            <Pressable style={styles.pressableDelete} onPress={removeFromList}>
+            <Pressable
+              style={[
+                styles.pressableDelete,
+                {
+                  borderColor: theme.borderColor,
+                  backgroundColor: theme.backgroundPrimary,
+                },
+              ]}
+              onPress={removeFromList}
+            >
               <AntDesign
                 style={styles.pressableIcon}
                 name="closecircleo"
                 size={24}
-                color={theme.light.textPrimary}
+                color={theme.textPrimary}
               />
             </Pressable>
           </View>
@@ -137,6 +176,7 @@ export default Product;
 const styles = StyleSheet.create({
   container: {
     display: "flex",
+    marginVertical: 5,
   },
   productBox: {
     display: "flex",
@@ -148,7 +188,6 @@ const styles = StyleSheet.create({
     borderStyle: "dashed",
     borderRadius: 15,
     marginVertical: 5,
-    backgroundColor: theme.light.backgroundSecondary,
   },
   productInfo: {
     marginHorizontal: "auto",
@@ -181,20 +220,16 @@ const styles = StyleSheet.create({
   },
   pressableDelete: {
     marginRight: 14,
-    backgroundColor: theme.light.backgroundPrimary,
     borderRadius: 10,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
   },
   pressableEdit: {
     marginLeft: "auto",
     marginRight: 14,
-    backgroundColor: theme.light.backgroundPrimary,
     borderRadius: 10,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
   },
   icon: {
     marginTop: 2,

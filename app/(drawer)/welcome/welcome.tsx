@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import WelcomePage from "../../../components/Welcome";
-import theme from "../../../styles/Colors";
+import ThemeContext from "../../../context/ThemeContext";
 
 const Welcome = () => {
   return (
@@ -16,6 +16,5 @@ export default Welcome;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.light.backgroundSecondary,
   },
 });

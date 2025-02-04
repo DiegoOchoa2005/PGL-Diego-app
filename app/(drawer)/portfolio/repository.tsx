@@ -5,18 +5,21 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import QRCode from "react-native-qrcode-svg";
-import theme from "../../../styles/Colors";
 import handleSounds from "../../../sounds/SoundHandler";
+import ThemeContext from "../../../context/ThemeContext";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeigth = Dimensions.get("window").height;
+
 const RepositoryPage = () => {
+  const theme = useContext(ThemeContext);
   const [sandyImage, setImage] = useState(
     require("../../../assets/img/sandyInteractive/normalSandy.png")
   );
   const [originalImage, setOriginalImage] = useState(true);
+
   const handleSandyImage = () => {
     if (originalImage) {
       handleSounds("slap");
@@ -30,8 +33,10 @@ const RepositoryPage = () => {
   };
 
   return (
-    <View style={styles.qrContainer}>
-      <View style={[styles.repoContainer]}>
+    <View
+      style={[styles.qrContainer, { backgroundColor: theme.backgroundPrimary }]}
+    >
+      <View style={styles.repoContainer}>
         <View style={styles.qrCode}>
           <QRCode
             size={110}
@@ -67,7 +72,6 @@ const styles = StyleSheet.create({
     height: screenHeigth - 140,
     maxWidth: screenWidth,
     maxHeight: screenHeigth - 130,
-    backgroundColor: theme.light.backgroundPrimary,
   },
   repoContainer: {
     display: "flex",

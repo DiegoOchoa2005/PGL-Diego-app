@@ -7,15 +7,14 @@ import {
   TextInput,
   View,
 } from "react-native";
-import React, { useState } from "react";
-import theme from "../../styles/Colors";
+import React, { useContext, useState } from "react";
 import { registerService } from "../../services/registerService";
 import { User } from "../../type/UserType";
 import { router } from "expo-router";
 import { Image as Gif } from "expo-image";
 import { KURUKURU, WU_AI_NI } from "../../assets/gifs/chibis";
-import { Audio } from "expo-av";
 import handleSounds from "../../sounds/SoundHandler";
+import ThemeContext from "../../context/ThemeContext";
 
 const screenHeigth = Dimensions.get("screen").height;
 const initialUserData: User = {
@@ -23,7 +22,9 @@ const initialUserData: User = {
   email: "",
   pswd: "",
 };
+
 const RegisterPage = () => {
+  const theme = useContext(ThemeContext);
   const [userData, setUserData] = useState<User>(initialUserData);
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
@@ -70,10 +71,22 @@ const RegisterPage = () => {
     !isPasswordValid;
 
   return (
-    <View style={styles.container}>
-      <View style={styles.wrapper}>
+    <View
+      style={[styles.container, { backgroundColor: theme.backgroundSecondary }]}
+    >
+      <View
+        style={[
+          styles.wrapper,
+          {
+            backgroundColor: theme.backgroundPrimary,
+            borderColor: theme.borderColor,
+          },
+        ]}
+      >
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Registro</Text>
+          <Text style={[styles.title, { color: theme.textPrimary }]}>
+            Registro
+          </Text>
         </View>
         <View style={styles.inputs}>
           <View style={{ display: "flex", flexDirection: "row" }}>
@@ -84,37 +97,56 @@ const RegisterPage = () => {
                 { position: "absolute", right: 20, bottom: -10 },
               ]}
             />
-            <Text style={[styles.labelInputs, { width: "50%" }]}>
+            <Text
+              style={[
+                styles.labelInputs,
+                { color: theme.textPrimary, width: "50%" },
+              ]}
+            >
               Nombre Completo
             </Text>
           </View>
 
           <TextInput
             placeholder="Nombre Completo"
-            style={styles.textInputs}
+            style={[
+              styles.textInputs,
+              {
+                borderColor: theme.borderColor,
+                backgroundColor: theme.backgroundSecondary,
+              },
+            ]}
             onChangeText={(fullName) => handleFullName(fullName)}
             value={userData.fullName}
           />
-          <Text style={styles.labelInputs}>Email</Text>
+          <Text style={[styles.labelInputs, { color: theme.textPrimary }]}>
+            Email
+          </Text>
 
           <TextInput
             placeholder="Email"
             style={[
               styles.textInputs,
-              { borderColor: isEmailValid ? theme.light.borderColor : "red" },
+              {
+                borderColor: isEmailValid ? theme.borderColor : "red",
+                backgroundColor: theme.backgroundSecondary,
+              },
             ]}
             keyboardType="email-address"
             onChangeText={(email) => handleEmail(email)}
             value={userData.email}
           />
 
-          <Text style={styles.labelInputs}>Contraseña</Text>
+          <Text style={[styles.labelInputs, { color: theme.textPrimary }]}>
+            Contraseña
+          </Text>
           <TextInput
             placeholder="Contraseña"
             style={[
               styles.textInputs,
               {
-                borderColor: isPasswordValid ? theme.light.borderColor : "red",
+                borderColor: isPasswordValid ? theme.borderColor : "red",
+                backgroundColor: theme.backgroundSecondary,
               },
             ]}
             onChangeText={(pass) => handlePassword(pass)}
@@ -124,18 +156,16 @@ const RegisterPage = () => {
           <Pressable
             style={[
               styles.registerButton,
-              { opacity: checkAllInputs ? 0.5 : 1 },
+              {
+                opacity: checkAllInputs ? 0.5 : 1,
+                backgroundColor: theme.backgroundSecondary,
+              },
             ]}
             disabled={checkAllInputs}
             onPress={sendUserData}
           >
             <Text
-              style={{
-                fontSize: 20,
-                fontWeight: "bold",
-                padding: 20,
-                textAlign: "center",
-              }}
+              style={[styles.registerButtonText, { color: theme.textPrimary }]}
             >
               Registrarse
             </Text>
@@ -167,18 +197,15 @@ export default RegisterPage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.light.backgroundSecondary,
   },
   wrapper: {
     margin: 10,
     marginTop: 20,
     display: "flex",
     flexDirection: "column",
-    backgroundColor: theme.light.backgroundPrimary,
     borderRadius: 10,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
     height: "95%",
   },
   titleContainer: {
@@ -204,12 +231,10 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   textInputs: {
-    borderColor: theme.light.borderColor,
     borderWidth: 1,
     borderStyle: "solid",
     width: "90%",
     height: 40,
-    backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     alignSelf: "center",
     marginBottom: 15,
@@ -222,11 +247,15 @@ const styles = StyleSheet.create({
   registerButton: {
     marginHorizontal: "auto",
     marginTop: 40,
-    backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
     width: "45%",
+  },
+  registerButtonText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    padding: 20,
+    textAlign: "center",
   },
 });

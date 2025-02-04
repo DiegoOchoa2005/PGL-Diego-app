@@ -1,10 +1,11 @@
 import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
 import Entypo from "@expo/vector-icons/Entypo";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import theme from "../styles/Colors";
 import { cameraService } from "../services/cameraService";
+import ThemeContext from "../context/ThemeContext";
 const screenHeigth = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("window").width;
 
@@ -15,6 +16,7 @@ export type CameraProps = {
 };
 
 const Camera = ({ userToken, closeCamera, setLoading }: CameraProps) => {
+  const theme = useContext(ThemeContext);
   const cameraRef = useRef<CameraView>(null);
   const [permission, requestCameraPermission] = useCameraPermissions();
   const [facing, setFacing] = useState<CameraType>("back");
@@ -47,17 +49,34 @@ const Camera = ({ userToken, closeCamera, setLoading }: CameraProps) => {
   if (!permission?.granted) {
     return (
       <Pressable
-        style={styles.PermissionButton}
+        style={[
+          styles.PermissionButton,
+          {
+            backgroundColor: theme.backgroundSecondary,
+            borderColor: theme.borderColor,
+          },
+        ]}
         onPress={requestCameraPermission}
       >
-        <Text style={styles.touchableText}>Permitir cámara</Text>
+        <Text
+          style={[
+            styles.touchableText,
+            {
+              color: theme.textPrimary,
+            },
+          ]}
+        >
+          Permitir cámara
+        </Text>
       </Pressable>
     );
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.borderButtons}>
+      <View
+        style={[styles.borderButtons, { backgroundColor: theme.borderColor }]}
+      >
         <Pressable onPress={() => toggleFlash()}>
           <Ionicons name={"flash"} size={32} style={styles.iconButton} />
         </Pressable>
@@ -86,7 +105,9 @@ const Camera = ({ userToken, closeCamera, setLoading }: CameraProps) => {
           console.log("Camera is ready!");
         }}
       ></CameraView>
-      <View style={styles.borderButtons}>
+      <View
+        style={[styles.borderButtons, { backgroundColor: theme.borderColor }]}
+      >
         <Pressable
           onPress={() => {
             takePicture();
@@ -112,15 +133,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: screenHeigth / 1.92,
     left: screenWidth / 4.3,
-    backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 50,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
     zIndex: 1,
   },
   touchableText: {
-    color: theme.light.textPrimary,
     fontSize: 18,
     fontWeight: "bold",
     padding: 20,
@@ -135,7 +153,6 @@ const styles = StyleSheet.create({
   },
   borderButtons: {
     height: 100,
-    backgroundColor: theme.light.borderColor,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-around",

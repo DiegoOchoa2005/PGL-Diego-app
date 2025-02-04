@@ -9,13 +9,16 @@ import {
 } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 
-import React, { useEffect, useState } from "react";
-import theme from "../styles/Colors";
+import React, { useContext, useEffect, useState } from "react";
 import Product, { ProductProps } from "./Product";
 import FormModal from "./FormModal";
+import ThemeContext from "../context/ThemeContext";
+
 const screenWidth = Dimensions.get("window").width;
 const screenHeigth = Dimensions.get("screen").height;
+
 const ShoppingList = () => {
+  const theme = useContext(ThemeContext);
   const [totalPrice, setTotalPrice] = useState(0.0);
   const [productList, setProductList] = useState<ProductProps[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -84,30 +87,50 @@ const ShoppingList = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {isModalVisible ? (
-        <>
-          <FormModal
-            isVisible={isModalVisible}
-            toggleModal={toggleModal}
-            addProduct={addProductToList}
-            editProduct={editProduct}
-            wantsToEdit={wantsToEdit}
-            handleEdit={handleEdit}
-            productID={productId}
-            productList={productList}
-          />
-        </>
-      ) : (
-        <></>
+    <View
+      style={[styles.container, { backgroundColor: theme.backgroundSecondary }]}
+    >
+      {isModalVisible && (
+        <FormModal
+          isVisible={isModalVisible}
+          toggleModal={toggleModal}
+          addProduct={addProductToList}
+          editProduct={editProduct}
+          wantsToEdit={wantsToEdit}
+          handleEdit={handleEdit}
+          productID={productId}
+          productList={productList}
+        />
       )}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Lista de Compras</Text>
+      <View
+        style={[
+          styles.header,
+          {
+            backgroundColor: theme.backgroundPrimary,
+            borderColor: theme.borderColor,
+          },
+        ]}
+      >
+        <Text style={[styles.headerTitle, { color: theme.textPrimary }]}>
+          Lista de Compras
+        </Text>
       </View>
-      <View style={styles.shoppingListContainer}>
+      <View
+        style={[
+          styles.shoppingListContainer,
+          {
+            backgroundColor: theme.backgroundPrimary,
+            borderColor: theme.borderColor,
+          },
+        ]}
+      >
         {productList.length === 0 ? (
           <>
-            <Text style={styles.statusListText}>La lista esta vacía...</Text>
+            <Text
+              style={[styles.statusListText, { color: theme.textSecondary }]}
+            >
+              La lista está vacía...
+            </Text>
             <View style={styles.imgContainer}>
               <Image
                 source={require("../assets/img/otherimages/anastasiatriste.png")}
@@ -134,33 +157,49 @@ const ShoppingList = () => {
           </View>
         )}
         <View style={styles.totalPrice}>
-          <Text style={styles.priceInformation}>
+          <Text
+            style={[styles.priceInformation, { color: theme.textSecondary }]}
+          >
             Precio total: {totalPrice.toFixed(2)}€
           </Text>
         </View>
         <View style={styles.pressableButtons}>
-          <Pressable style={styles.pressableAddProduct} onPress={toggleModal}>
+          <Pressable
+            style={[
+              styles.pressableAddProduct,
+              {
+                backgroundColor: theme.backgroundSecondary,
+                borderColor: theme.borderColor,
+              },
+            ]}
+            onPress={toggleModal}
+          >
             <Entypo
-              style={styles.pressableAddIcon}
+              style={[styles.pressableAddIcon, { color: theme.textPrimary }]}
               name="circle-with-plus"
               size={20}
-              color={theme.light.textPrimary}
             />
           </Pressable>
-          {productList.length > 0 ? (
+          {productList.length > 0 && (
             <Pressable
-              style={styles.pressableDeleteAllProducts}
+              style={[
+                styles.pressableDeleteAllProducts,
+                {
+                  backgroundColor: theme.backgroundSecondary,
+                  borderColor: theme.borderColor,
+                },
+              ]}
               onPress={removeAllProducts}
             >
               <Entypo
-                style={styles.pressableDeleteIcon}
+                style={[
+                  styles.pressableDeleteIcon,
+                  { color: theme.textPrimary },
+                ]}
                 name="trash"
                 size={20}
-                color={theme.light.textPrimary}
               />
             </Pressable>
-          ) : (
-            <></>
           )}
         </View>
       </View>
@@ -173,16 +212,13 @@ export default ShoppingList;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.light.backgroundSecondary,
     alignItems: "center",
   },
   header: {
     width: screenWidth,
     height: 100,
-    backgroundColor: theme.light.backgroundPrimary,
     alignItems: "center",
     justifyContent: "center",
-    borderColor: theme.light.borderColor,
     borderBottomWidth: 1,
     borderStyle: "dashed",
   },
@@ -190,7 +226,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: "center",
     fontStyle: "italic",
-    color: theme.light.textPrimary,
     fontWeight: "bold",
   },
   shoppingListContainer: {
@@ -198,10 +233,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginVertical: "auto",
     alignItems: "center",
-    backgroundColor: theme.light.backgroundPrimary,
     height: "80%",
     width: screenWidth - 40,
-    borderColor: theme.light.borderColor,
     borderWidth: 1,
     borderStyle: "dashed",
   },
@@ -216,7 +249,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontStyle: "italic",
     fontWeight: "bold",
-    color: theme.light.textSecondary,
   },
   imgContainer: {
     marginVertical: 20,
@@ -233,7 +265,6 @@ const styles = StyleSheet.create({
   priceInformation: {
     fontSize: 18,
     fontWeight: "bold",
-    color: theme.light.textSecondary,
   },
   pressableButtons: {
     flexDirection: "row",
@@ -244,31 +275,25 @@ const styles = StyleSheet.create({
   pressableAddProduct: {
     marginHorizontal: "auto",
     marginVertical: 5,
-    backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
     width: "20%",
   },
   pressableDeleteAllProducts: {
     marginHorizontal: "auto",
     marginVertical: 5,
-    backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
     borderWidth: 1,
     borderStyle: "dashed",
-    borderColor: theme.light.borderColor,
     width: "20%",
   },
   pressableDeleteIcon: {
-    color: theme.light.textPrimary,
     marginVertical: "auto",
     textAlign: "center",
     padding: 10,
   },
   pressableAddIcon: {
-    color: theme.light.textPrimary,
     fontWeight: "bold",
     padding: 10,
     textAlign: "center",

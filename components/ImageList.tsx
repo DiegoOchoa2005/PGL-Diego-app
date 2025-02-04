@@ -66,13 +66,13 @@ const styles = StyleSheet.create({
   imageItem: {
     height: 100,
     width: 100,
-    margin: 5, // 📌 Espaciado entre imágenes
+    margin: 5,
   },
   modalContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.8)", // 📌 Fondo oscuro semi-transparente
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
   },
   modalBackground: {
     justifyContent: "center",
