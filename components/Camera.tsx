@@ -11,9 +11,10 @@ const screenWidth = Dimensions.get("window").width;
 export type CameraProps = {
   closeCamera: () => void;
   userToken: string;
+  setLoading: (loading: boolean) => void;
 };
 
-const Camera = ({ userToken, closeCamera }: CameraProps) => {
+const Camera = ({ userToken, closeCamera, setLoading }: CameraProps) => {
   const cameraRef = useRef<CameraView>(null);
   const [permission, requestCameraPermission] = useCameraPermissions();
   const [facing, setFacing] = useState<CameraType>("back");
@@ -33,7 +34,9 @@ const Camera = ({ userToken, closeCamera }: CameraProps) => {
       });
       if (picture != null && picture.base64 != null) {
         await cameraService.saveImage(userToken, picture);
+        setLoading(true);
         closeCamera();
+        setTimeout(() => setLoading(false), 2000);
       } else {
         alert("Ocurrió un error sacando una foto.");
       }

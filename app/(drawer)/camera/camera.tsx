@@ -2,25 +2,29 @@ import {
   Dimensions,
   FlatList,
   Image,
+  Modal,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ImageData } from "../../../type/ImageData";
 
 import theme from "../../../styles/Colors";
 import { asyncStorageService } from "../../../services/asyncStorageService";
 import { cameraService } from "../../../services/cameraService";
 import Camera from "../../../components/Camera";
-const screenHeigth = Dimensions.get("screen").height;
+import ImageList from "../../../components/ImageList";
+import Loading from "../../../components/Loading";
+import { useFocusEffect } from "expo-router";
 
 const cameraPage = () => {
   const [images, setImages] = useState<ImageData[]>([]);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [userToken, setUserToken] = useState("");
-
+  const [loading, setLoading] = useState(true);
   const getImages = async () => {
     const token = await asyncStorageService.getItem();
     const camImages = await cameraService.getAllImages(token!);
@@ -37,14 +41,27 @@ const cameraPage = () => {
     setIsCameraOpen(false);
     await getImages();
   };
-  useEffect(() => {
-    getImages();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      setLoading(true);
+      getImages();
+      setTimeout(() => setLoading(false), 1000);
+
+      return () => {};
+    }, [])
+  );
+
   return (
     <View style={styles.container}>
+      <Loading visible={loading} />
+
       <View style={styles.wrapper}>
         {isCameraOpen ? (
-          <Camera userToken={userToken} closeCamera={closeCamera} />
+          <Camera
+            userToken={userToken}
+            closeCamera={closeCamera}
+            setLoading={setLoading}
+          />
         ) : images.length === 0 ? (
           <View style={styles.noImagesContainer}>
             <View style={styles.noImagesContent}>
@@ -60,22 +77,7 @@ const cameraPage = () => {
           </View>
         ) : (
           <>
-            <View style={styles.images}>
-              <FlatList
-                data={images}
-                renderItem={({ item }) => (
-                  <>
-                    <Image
-                      style={styles.imageItem}
-                      source={{
-                        uri: `data:image/jpg;base64,${item.encodedData}`,
-                      }}
-                    />
-                  </>
-                )}
-                keyExtractor={(item, index) => index.toString()}
-              />
-            </View>
+            <ImageList list={images} />
             <TouchableOpacity style={styles.touchable} onPress={openCamera}>
               <Text style={styles.touchableText}>Tomar foto</Text>
             </TouchableOpacity>
@@ -129,6 +131,7 @@ const styles = StyleSheet.create({
   },
   touchable: {
     marginHorizontal: "auto",
+    marginTop: 25,
     marginBottom: "auto",
     backgroundColor: theme.light.backgroundSecondary,
     borderRadius: 10,
@@ -143,17 +146,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     padding: 10,
     textAlign: "center",
-  },
-  images: {
-    height: "80%",
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  imageItem: {
-    height: 100,
-    width: 100,
   },
 });
