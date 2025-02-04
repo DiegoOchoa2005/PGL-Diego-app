@@ -59,7 +59,7 @@ const AppLayout = () => {
           }}
         />
         <Drawer.Screen
-          name="camera/camera"
+          name="galery/gallery"
           options={{
             title: "App :3",
             drawerLabel: "Galería",
